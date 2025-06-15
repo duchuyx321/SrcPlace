@@ -1,0 +1,28 @@
+const mongoose = require('mongoose');
+const mongoose_delete = require('mongoose-delete');
+
+const Schema = mongoose.Schema;
+
+const PaymentMethodsSchema = new Schema(
+    {
+        name: { type: String, required: true },
+        code: { type: String, required: true },
+        status: { type: String, default: active },
+        type: { type: String },
+        config: {
+            apiKey: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
+            callbackUrl: { type: String, required: true },
+            partnerCode: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
+        },
+        image_url: { type: String },
+    },
+    { timeseries: true, collection: 'PaymentMethods' },
+);
+
+// plugin
+PaymentMethodsSchema.plugin(mongoose_delete, {
+    deletedAt: true,
+    overrideMethods: true,
+});
+
+module.exports = mongoose.model('PaymentMethods', PaymentMethodsSchema);

@@ -1,13 +1,18 @@
+// model
 const Users = require('../Model/Users');
-const { hashPassword, comparePassword } = require('../../util/passwordUtil');
-const AuthServices = require('../../services/AuthServices');
 const TrustedDevices = require('../Model/TrustedDevices');
+// util
+const { hashPassword, comparePassword } = require('../../util/passwordUtil');
 const { newDeviceID } = require('../../util/deviceUtil');
 const {
     newAccessToken,
     newRefreshToken,
     newTempToken,
+    setTokenInCookie,
 } = require('../../util/jwtUtil');
+// services
+const AuthServices = require('../../services/AuthServices');
+const TokenService = require('../../services/TokenService');
 class AuthController {
     // [POST] --/auth/pre-login-check
     async PrevLoginCheck(req, res, next) {}
@@ -16,6 +21,7 @@ class AuthController {
         try {
             const pass = req.body.password;
             const usernameOrEmail = req.body.usernameOrEmail;
+            // kiểm tra tài khoản người dùng
             const user = await Users.findOne({
                 $or: [
                     {
@@ -58,8 +64,21 @@ class AuthController {
                 device_ID,
                 role: user.role,
             };
-            if (!result?.is_session && result?.is_trustDevices) {
+            const { is_session, is_enabled2fa, is_trustDevices } = result;
+            let meta = { is_session, is_enabled2fa, is_trustDevices };
+            // kiểm tra và lấy token theo đúng yêu cầu
+            if (!is_session && is_trustDevices) {
+                const AccessToken = await newAccessToken(profile);
+                const RefreshToken = await newRefreshToken(profile);
+                await res.cookie(
+                    'refreshToken',
+                    RefreshToken,
+                    setTokenInCookie(),
+                );
+                meta = { ...meta, AccessToken };
             } else {
+                const TempToken = await newTempToken(profile);
+                meta = { ...meta, TempToken };
             }
             const { password, ...other } = user._doc;
             return res.status(200).json({ data: other, meta: {} });

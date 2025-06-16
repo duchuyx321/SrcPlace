@@ -13,7 +13,8 @@ const TokenSessionSchema = new Schema(
         token: { type: String, required: true },
         userAgent: { type: String },
         ip: { type: String },
-        is_revoked: { type: String },
+        is_revoked: { type: Boolean, default: false },
+        expiresAt: { type: Date },
     },
     { timeseries: true, collection: 'TokenSession' },
 );

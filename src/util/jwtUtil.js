@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const ms = require('ms');
 require('dotenv').config();
 
 const newAccessToken = async (profile) => {
@@ -10,7 +11,7 @@ const newAccessToken = async (profile) => {
             expiresIn: process.env.TIME_ACCESS_TOKEN || '1h',
         },
     );
-    return newAccessToken;
+    return `Bearer ${newAccessToken}`;
 };
 const newRefreshToken = async (profile) => {
     const newRefreshToken = await jwt.sign(
@@ -21,14 +22,30 @@ const newRefreshToken = async (profile) => {
             expiresIn: process.env.TIME_REFRESH_TOKEN || '1h',
         },
     );
-    return newRefreshToken;
+    return `Bearer ${newRefreshToken}`;
 };
 const newTempToken = async (profile) => {
     const newTempToken = await jwt.sign(profile, process.env.JWT_TEMP_TOKEN, {
         algorithm: 'HS256',
         expiresIn: process.env.TIME_TEMP_TOKEN || '1h',
     });
-    return newTempToken;
+    return `Bearer ${newTempToken}`;
 };
 
-module.exports = { newAccessToken, newRefreshToken, newTempToken };
+const setTokenInCookie = () => {
+    const expires = ms(process.env.TIME_REFRESH_TOKEN || '7d');
+    return {
+        httpOnly: true,
+        secure: true,
+        path: '/',
+        sameSite: 'strict',
+        expires: new Date(Date.now() + expires),
+    };
+};
+
+module.exports = {
+    newAccessToken,
+    newRefreshToken,
+    newTempToken,
+    setTokenInCookie,
+};

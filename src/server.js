@@ -26,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // router
 router(app);
+// set up proxy
+app.set('trust proxy', true);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

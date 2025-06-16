@@ -1,13 +1,74 @@
+const Users = require('../Model/Users');
+const { hashPassword, comparePassword } = require('../../util/passwordUtil');
+const AuthServices = require('../../services/AuthServices');
+const TrustedDevices = require('../Model/TrustedDevices');
+const { newDeviceID } = require('../../util/deviceUtil');
+const {
+    newAccessToken,
+    newRefreshToken,
+    newTempToken,
+} = require('../../util/jwtUtil');
 class AuthController {
+    // [POST] --/auth/pre-login-check
+    async PrevLoginCheck(req, res, next) {}
+    // [POST] --/auth/login
     async login(req, res, next) {
         try {
             const pass = req.body.password;
             const usernameOrEmail = req.body.usernameOrEmail;
+            const user = await Users.findOne({
+                $or: [
+                    {
+                        username: usernameOrEmail,
+                    },
+                    { email: usernameOrEmail },
+                ],
+            });
+            if (!user) {
+                return res
+                    .status(401)
+                    .json({ error: 'wrong username or email!' });
+            }
+            const is_password = await comparePassword(pass, user.password);
+            if (!is_password) {
+                return res.status(401).json({ error: 'wrong password!' });
+            }
+            // check 2fa
+            const userAgent = req.headers['user-agent'];
+            const ip =
+                (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+                req.socket.remoteAddress;
+            const trustedDevice = await TrustedDevices.findOne({
+                user_ID: user._id,
+                ip: ip,
+                userAgent: userAgent,
+            });
+            let device_ID = trustedDevice?.device_ID;
+            if (!trustedDevice) {
+                device_ID = await newDeviceID();
+            }
+            const result = await AuthServices.validateLoginSession({
+                user_ID: user._id,
+                device_ID: device_ID,
+                ip: '',
+                userAgent: '',
+            });
+            const profile = {
+                user_ID: user._id,
+                device_ID,
+                role: user.role,
+            };
+            if (!result?.is_session && result?.is_trustDevices) {
+            } else {
+            }
+            const { password, ...other } = user._doc;
+            return res.status(200).json({ data: other, meta: {} });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }
+    // [POST] --/auth/register
     async register(req, res, next) {
         try {
             const { username, password, email } = req.body;
@@ -16,6 +77,7 @@ class AuthController {
             return res.status(500).json({ error: error.message });
         }
     }
+    // [POST] --/auth/refresh
     async refresh(req, res, next) {
         try {
             // lưu ý cần kiểm tra token và thiết bị
@@ -24,6 +86,7 @@ class AuthController {
             return res.status(500).json({ error: error.message });
         }
     }
+    // [POST] --/auth/logout
     async logout(req, res, next) {
         try {
             // lưu ý xóa token và session trên web

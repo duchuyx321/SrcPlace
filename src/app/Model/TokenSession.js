@@ -6,6 +6,10 @@ const Schema = mongoose.Schema;
 const TokenSessionSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true },
+        device_ID: {
+            type: String,
+            required: true,
+        },
         token: { type: String, required: true },
         userAgent: { type: String },
         ip: { type: String },
@@ -13,7 +17,8 @@ const TokenSessionSchema = new Schema(
     },
     { timeseries: true, collection: 'TokenSession' },
 );
-
+// index
+TokenSessionSchema.index({ user_ID: 1, device_ID: 1 }, { unique: true });
 // plugin
 TokenSessionSchema.plugin(mongoose_delete, {
     deletedAt: true,

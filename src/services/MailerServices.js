@@ -1,6 +1,6 @@
-const Notification = require('../app/Model/Notification');
 const MailTemplates = require('../config/Mail/MailTemplates');
 const { emailSender } = require('../util/mailerUtil');
+const NotificationService = require('./NotificationService');
 const SocketService = require('./SocketService');
 
 class MailerServices {
@@ -40,6 +40,12 @@ class MailerServices {
             };
             SocketService.emitToUsers(io, user_IDs, type, data);
             // lưu thông báo vào db
+            await NotificationService.addNotify({
+                title: subject,
+                message: text,
+                user_IDs,
+                notifiable_type: type,
+            });
             return {
                 status: 200,
                 message: 'Send and Notify mail successful',

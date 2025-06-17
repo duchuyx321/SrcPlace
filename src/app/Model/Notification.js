@@ -10,6 +10,7 @@ const NotificationSchema = new Schema(
         message: { type: String },
         notifiable_link: { type: String },
         notifiable_meta: { type: Object, default: {} },
+        is_sendAll: { type: Boolean, default: false },
     },
     { timeseries: true, collection: 'Notification' },
 );

@@ -7,7 +7,7 @@ const NotificationStatusSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true },
         notification_ID: { type: Schema.Types.ObjectId, required: true },
-        is_read: { type: Boolean },
+        is_read: { type: Boolean, default: false },
         readAt: { type: Date },
     },
     { timeseries: true, collection: 'NotificationStatus' },

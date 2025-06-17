@@ -12,6 +12,7 @@ const UsersSchema = new Schema(
         avatar: { type: String },
         first_name: { type: String },
         last_name: { type: String },
+        is_blocked: { type: Boolean, default: false },
     },
     { timeseries: true, collection: 'Users' },
 );

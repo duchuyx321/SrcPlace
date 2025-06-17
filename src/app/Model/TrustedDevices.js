@@ -19,7 +19,7 @@ const TrustedDevicesSchema = new Schema(
     { timeseries: true, collection: 'TrustedDevices' },
 );
 // index
-TokenSessionSchema.index({ user_ID: 1, device_ID: 1 }, { unique: true });
+TrustedDevicesSchema.index({ user_ID: 1, device_ID: 1 }, { unique: true });
 // plugin
 TrustedDevicesSchema.plugin(mongoose_delete, {
     deletedAt: true,

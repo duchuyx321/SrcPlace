@@ -10,4 +10,10 @@ module.exports = {
         subject: 'Chào mừng bạn đến với SrcPlace!',
         text: 'Cảm ơn vạn đã tạo tài khoản tại SrcPlace. Chúng tôi rất vui được đồng hành cùng với bạn!',
     },
+    SEND_OTP: {
+        subject: 'Mã Xác Thực (OTP)',
+        text: ({ code = '', expiresIn = 2 } = {}) =>
+            `Mã xác thực của bạn là: ${code}. Vui lòng không cung cấp mã này ra ngoài.\n\n` +
+            `Mã sẽ hết hạn sau ${expiresIn} phút.Nếu không phải bạn yêu cầu, hãy bỏ qua email này.`,
+    },
 };

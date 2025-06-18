@@ -14,15 +14,10 @@ const {
 const AuthServices = require('../../services/AuthServices');
 const TokenService = require('../../services/TokenService');
 const MailerServices = require('../../services/MailerServices');
+const { newCode } = require('../../util/codeUtil');
+const MailTemplates = require('../../config/Mail/MailTemplates');
+const VerifyCodesServices = require('../../services/VerifyCodesServices');
 class AuthController {
-    // [POST] --/auth/pre-login-check
-    async PrevLoginCheck(req, res, next) {
-        try {
-        } catch (error) {
-            console.log(error);
-            return res.status(501).json({ error: error.message });
-        }
-    }
     // [POST] --/auth/login
     async login(req, res, next) {
         try {
@@ -148,6 +143,73 @@ class AuthController {
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
+        }
+    }
+    // [POST] --/auth/pre-login-check
+    async PrevLoginCheck(req, res, next) {
+        try {
+            const { user_ID, device_ID } = req.user;
+            const { type, code } = req.body; // type: App || email'
+            if (type === 'email') {
+                const checkVerifyCodes =
+                    await VerifyCodesServices.CheckVerifyCodes();
+
+                if (checkVerifyCodes.status !== 200) {
+                    return res
+                        .status(checkVerifyCodes.status)
+                        .json({ error: checkVerifyCodes.message });
+                }
+            } else {
+                // check jwt
+            }
+            // tạo jwt
+            const AccessToken = await newAccessToken(profile);
+            const RefreshToken = await newRefreshToken(profile);
+            await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
+            return res.status({ data: { meta: { AccessToken } } });
+        } catch (error) {
+            console.log(error);
+            return res.status(501).json({ error: error.message });
+        }
+    }
+    // [POST] --/auth/send-mail
+    async sendCodeTOMail(req, res, next) {
+        try {
+            const { user_ID, device_ID } = req.user;
+            const user = await Users.findOne({ _id: user_ID });
+            if (!user) {
+                return res.status(503).json({ error: 'Users do not exist!' });
+            }
+            const to = [user.email];
+            const code = await newCode();
+            const template = MailTemplates['SEND_OTP'];
+            subject = template.subject;
+            text =
+                typeof template.text === 'function'
+                    ? template.text({ code })
+                    : template.text;
+            // gửi đến người dùng
+            await MailerServices.sendMailer({
+                to,
+                subject,
+                text,
+                first_name: user.first_name,
+                last_name: user.last_name,
+            });
+            //  lưu code vào db
+            await VerifyCodesServices.AddVerifyCodes({
+                user_ID,
+                device_ID,
+                code,
+            });
+            return res.status(200).json({
+                data: {
+                    message: 'Send Code To Email successful!',
+                },
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(501).json({ error: error.message });
         }
     }
 }

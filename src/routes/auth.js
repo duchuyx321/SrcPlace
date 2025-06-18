@@ -11,6 +11,11 @@ router.post(
     JwtMiddleware.verifyTempToken,
     AuthController.PrevLoginCheck,
 );
+router.post(
+    '/send-mail',
+    JwtMiddleware.verifyTempToken,
+    AuthController.sendCodeTOMail,
+);
 router.post('/login', AuthController.login);
 router.post('/register', AuthController.register);
 router.post('/refresh', AuthController.refresh);

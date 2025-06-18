@@ -7,8 +7,10 @@ const TwoFactorAuthSchema = new Schema(
     {
         user_ID: { type: String, required: true, unique: true },
         secret: { type: String, required: true }, // cần mã hóa trước khi lưu vào db
-        is_enabled: { type: Boolean, default: false },
+        is_enabled: { type: Boolean, default: true },
+        is_verified: { type: Boolean, default: false },
         backupCodes: { type: String, required: true },
+        qr_url: { type: String },
     },
     { timeseries: true, collection: 'TwoFactorAuth' },
 );

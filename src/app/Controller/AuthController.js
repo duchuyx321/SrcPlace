@@ -17,6 +17,7 @@ const MailerServices = require('../../services/MailerServices');
 const { newCode } = require('../../util/codeUtil');
 const MailTemplates = require('../../config/Mail/MailTemplates');
 const VerifyCodesServices = require('../../services/VerifyCodesServices');
+const TowFactorAuthService = require('../../services/TowFactorAuthService');
 class AuthController {
     // [POST] --/auth/login
     async login(req, res, next) {
@@ -67,8 +68,14 @@ class AuthController {
                 device_ID,
                 role: user.role,
             };
-            const { is_session, is_enabled2fa, is_trustDevices } = result;
-            let meta = { is_session, is_enabled2fa, is_trustDevices };
+            const { is_session, is_enabled2fa, is_trustDevices, is_verify2fa } =
+                result;
+            let meta = {
+                is_session,
+                is_enabled2fa,
+                is_trustDevices,
+                is_verify2fa,
+            };
             // kiểm tra và lấy token theo đúng yêu cầu
             if (!is_session && is_trustDevices) {
                 const AccessToken = await newAccessToken(profile);
@@ -148,8 +155,8 @@ class AuthController {
     // [POST] --/auth/pre-login-check
     async PrevLoginCheck(req, res, next) {
         try {
-            const { user_ID, device_ID } = req.user;
-            const { type, code } = req.body; // type: App || email'
+            const { user_ID } = req.user;
+            const { type, token } = req.body; // type: App || email'
             if (type === 'email') {
                 const checkVerifyCodes =
                     await VerifyCodesServices.CheckVerifyCodes();
@@ -160,7 +167,17 @@ class AuthController {
                         .json({ error: checkVerifyCodes.message });
                 }
             } else {
-                // check jwt
+                // check auth
+                const checkTokenTwoFA =
+                    await TowFactorAuthService.checkTowFactorAuth({
+                        user_ID,
+                        token,
+                    });
+                if (checkTokenTwoFA.status !== 200) {
+                    return res
+                        .status(checkTokenTwoFA.status)
+                        .json({ error: checkTokenTwoFA.message });
+                }
             }
             // tạo jwt
             const AccessToken = await newAccessToken(profile);

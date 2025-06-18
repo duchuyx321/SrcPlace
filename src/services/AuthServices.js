@@ -23,6 +23,7 @@ class AuthServices {
             is_session: (!!otherSession && !isSameDevice) || false,
             is_enabled2fa: authentication.is_enabled || false,
             is_trustDevices: !!trustedDevice || false,
+            is_verify2fa: authentication.is_verified || false,
         };
     }
 }

@@ -12,6 +12,7 @@ class MailerServices {
         text = '',
         first_name = '',
         last_name = '',
+        is_notify = true,
         is_sendAll = false,
     } = {}) {
         if (to.length < 1) {
@@ -23,13 +24,15 @@ class MailerServices {
         const html = this.designHtmlMailer({ first_name, last_name, text });
         const info = await emailSender({ to, html, subject, text });
         // lưu thông báo vào db
-        await NotificationService.addNotify({
-            title: subject,
-            message: text,
-            user_IDs,
-            notifiable_type: type,
-            is_sendAll,
-        });
+        if (is_notify) {
+            await NotificationService.addNotify({
+                title: subject,
+                message: text,
+                user_IDs,
+                notifiable_type: type,
+                is_sendAll,
+            });
+        }
         return {
             status: 200,
             message: 'Send and Notify mail successful',

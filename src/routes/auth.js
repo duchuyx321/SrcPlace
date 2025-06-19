@@ -23,7 +23,11 @@ router.post(
     uploadCloudinary({ type: 'Avatar' }).single('file'),
     AuthController.register,
 );
-router.post('/refresh', AuthController.refresh);
+router.post(
+    '/refresh',
+    JwtMiddleware.verifyRefreshToken,
+    AuthController.refresh,
+);
 router.post('/logout', AuthController.logout);
 
 module.exports = router;

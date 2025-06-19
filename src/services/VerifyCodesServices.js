@@ -1,4 +1,5 @@
 const ms = require('ms');
+const mongoose = require('mongoose');
 const VerifyCodes = require('../app/Model/VerifyCodes');
 
 class VerifyCodesService {
@@ -7,17 +8,30 @@ class VerifyCodesService {
         user_ID = '',
         code = '',
         device_ID = '',
-        timeEnd = '2p',
+        timeEnd = '2m',
     } = {}) {
         const expiresInMs = ms(timeEnd);
         const expiresAt = new Date(Date.now() + expiresInMs);
-        const newCode = new VerifyCodes({
-            user_ID,
-            device_ID,
-            code,
-            expiresAt,
-        });
-        await newCode.save();
+        const userObjectId = new mongoose.Types.ObjectId(user_ID);
+        const newCode = await VerifyCodes.findOneAndUpdate(
+            {
+                user_ID: userObjectId,
+            },
+            {
+                $set: {
+                    device_ID,
+                    code,
+                    expiresAt,
+                },
+            },
+            {
+                new: true,
+                upsert: true,
+            },
+        );
+        if (!newCode) {
+            throw new Error({ error: 'create code in database is false' });
+        }
         return {
             status: 200,
             message: 'add verify code successful',

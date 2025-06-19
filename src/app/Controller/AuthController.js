@@ -268,6 +268,9 @@ class AuthController {
     async refresh(req, res, next) {
         try {
             // lưu ý cần kiểm tra token và thiết bị
+            const profile = req.user;
+            const AccessToken = await newAccessToken(profile);
+            return res.status({ data: { meta: { AccessToken } } });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
@@ -276,7 +279,15 @@ class AuthController {
     // [POST] --/auth/logout
     async logout(req, res, next) {
         try {
-            // lưu ý xóa token và session trên web
+            const refreshToken = req.cookies.refreshToken;
+            if (refreshToken) {
+                res.clearCookie('refreshToken', {
+                    httpOnly: true,
+                    sameSite: 'Strict',
+                    secure: true,
+                });
+            }
+            return res.status(200).json({ message: 'Logout successful!' });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
@@ -285,11 +296,15 @@ class AuthController {
     // [POST] --/auth/pre-login-check
     async PrevLoginCheck(req, res, next) {
         try {
-            const { user_ID } = req.user;
-            const { type, token } = req.body; // type: App || email'
+            const { user_ID, device_ID, role } = req.user;
+            const { type, code } = req.body; // type: App || email'
             if (type === 'email') {
                 const checkVerifyCodes =
-                    await VerifyCodesServices.CheckVerifyCodes();
+                    await VerifyCodesServices.CheckVerifyCodes({
+                        user_ID,
+                        device_ID,
+                        code,
+                    });
 
                 if (checkVerifyCodes.status !== 200) {
                     return res
@@ -310,10 +325,11 @@ class AuthController {
                 }
             }
             // tạo jwt
+            const profile = { user_ID, device_ID, role };
             const AccessToken = await newAccessToken(profile);
             const RefreshToken = await newRefreshToken(profile);
             await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
-            return res.status({ data: { meta: { AccessToken } } });
+            return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });
@@ -330,18 +346,19 @@ class AuthController {
             const to = [user.email];
             const code = await newCode();
             const template = MailTemplates['SEND_OTP'];
-            subject = template.subject;
-            text =
+            const subject = template.subject;
+            const text =
                 typeof template.text === 'function'
                     ? template.text({ code })
                     : template.text;
             // gửi đến người dùng
-            await MailerServices.sendMailer({
+            await MailerServices.sendMailerAndNotify({
                 to,
                 subject,
                 text,
                 first_name: user.first_name,
                 last_name: user.last_name,
+                is_notify: false, // không phải là thông báo
             });
             //  lưu code vào db
             await VerifyCodesServices.AddVerifyCodes({

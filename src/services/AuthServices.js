@@ -21,9 +21,9 @@ class AuthServices {
         const isSameDevice = otherSession?.device_ID === device_ID;
         return {
             is_session: (!!otherSession && !isSameDevice) || false,
-            is_enabled2fa: authentication.is_enabled || false,
+            is_enabled2fa: authentication?.is_enabled || false,
             is_trustDevices: !!trustedDevice || false,
-            is_verify2fa: authentication.is_verified || false,
+            is_verify2fa: authentication?.is_verified || false,
         };
     }
 }

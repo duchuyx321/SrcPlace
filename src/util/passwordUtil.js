@@ -2,7 +2,7 @@ const bcryptjs = require('bcryptjs');
 require('dotenv').config();
 
 const hashPassword = async (password) => {
-    const salt = bcryptjs.genSaltSync(process.env.SALT_ROUNDS);
+    const salt = bcryptjs.genSaltSync(parseInt(process.env.SALT_ROUNDS));
     const hash = bcryptjs.hashSync(password, salt);
     return hash;
 };

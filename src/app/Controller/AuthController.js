@@ -2,6 +2,7 @@
 const Users = require('../Model/Users');
 const TrustedDevices = require('../Model/TrustedDevices');
 // util
+
 const { hashPassword, comparePassword } = require('../../util/passwordUtil');
 const { newDeviceID } = require('../../util/deviceUtil');
 const {
@@ -10,6 +11,7 @@ const {
     newTempToken,
     setTokenInCookie,
 } = require('../../util/jwtUtil');
+const { validateField } = require('../../util/checkValid');
 // services
 const AuthServices = require('../../services/AuthServices');
 const TokenService = require('../../services/TokenService');
@@ -18,6 +20,7 @@ const { newCode } = require('../../util/codeUtil');
 const MailTemplates = require('../../config/Mail/MailTemplates');
 const VerifyCodesServices = require('../../services/VerifyCodesServices');
 const TowFactorAuthService = require('../../services/TowFactorAuthService');
+const CloudinaryService = require('../../services/CloudinaryService');
 class AuthController {
     // [POST] --/auth/login
     async login(req, res, next) {
@@ -85,7 +88,6 @@ class AuthController {
                     RefreshToken,
                     setTokenInCookie(),
                 );
-                meta = { ...meta, AccessToken };
                 // thêm cookie vào db
                 await TokenService.addToken({
                     ip,
@@ -94,6 +96,7 @@ class AuthController {
                     user_ID: user._id,
                     token: RefreshToken,
                 });
+                meta = { ...meta, AccessToken };
             } else {
                 const TempToken = await newTempToken(profile);
                 meta = { ...meta, TempToken };
@@ -101,13 +104,20 @@ class AuthController {
                 const to = [user.email];
                 if (!is_trustDevices) {
                     // thêm thông báo và gửi đến người dùng
+                    const type = 'LOGIN_WARING';
+                    const template = MailTemplates[type];
+                    const subject = template.subject;
+                    const text =
+                        typeof template.text === 'function'
+                            ? template.text(userAgent)
+                            : template.text;
                     const resultSendMail =
                         await MailerServices.sendMailerAndNotify({
                             to,
+                            notifiable_type: type,
                             user_IDs,
-                            type: 'LOGIN_WARING',
-                            io: req.io,
-                            userAgent,
+                            subject,
+                            text,
                             first_name: user.first_name,
                             last_name: user.last_name,
                         });
@@ -127,10 +137,130 @@ class AuthController {
     }
     // [POST] --/auth/register
     async register(req, res, next) {
+        const file = req.file;
         try {
-            const { username, password, email } = req.body;
+            const { username, email, first_name, last_name } = req.body;
+            const pass = req.body.password;
+            const avatar = file?.path || '';
+            if (!username || !pass || !email || !first_name || !last_name) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res.status(401).json({ error: 'missing data upload!' });
+            }
+            // kiểm tra các thông tin gửi lên
+            await validateField({
+                type: 'username',
+                valid: username,
+                min: 6,
+                max: 15,
+            });
+            await validateField({
+                type: 'password',
+                valid: pass,
+                min: 8,
+                max: 20,
+            });
+            await validateField({
+                type: 'email',
+                valid: email,
+                min: 10,
+                max: 38,
+            });
+            await validateField({
+                type: 'first name',
+                valid: first_name,
+                min: 1,
+                max: 30,
+            });
+            await validateField({
+                type: 'last name',
+                valid: last_name,
+                min: 1,
+                max: 30,
+            });
+            //  kiểm tra user or email đã tồn tại hay chưa
+            const isUsername = await Users.findOne({ username });
+            if (isUsername) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res
+                    .status(400)
+                    .json({ error: 'Username already exists.' });
+            }
+            const isEmail = await Users.findOne({ email });
+            if (isEmail) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res.status(400).json({ error: 'Email already exists.' });
+            }
+            // hash pass
+            const hashPass = await hashPassword(pass);
+            // thêm vào db
+            const newUser = new Users({
+                username,
+                email,
+                password: hashPass,
+                avatar,
+                first_name,
+                last_name,
+            });
+            await newUser.save();
+            // gửi thông báo đến người dùng
+            const type = 'WELCOME';
+            const template = MailTemplates[type];
+            const subject = template.subject;
+            const text = template.text;
+            const resultSendMail = await MailerServices.sendMailerAndNotify({
+                to: [newUser.email],
+                notifiable_type: type,
+                user_IDs: [newUser._id],
+                subject,
+                text,
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
+            });
+            if (resultSendMail.status !== 200) {
+                return res
+                    .status(resultSendMail.status)
+                    .json({ error: resultSendMail.error });
+            }
+            // lấy token
+            const device_ID = await newDeviceID();
+            const profile = {
+                user_ID: newUser._id,
+                device_ID,
+                role: newUser.role,
+            };
+            const AccessToken = await newAccessToken(profile);
+            const RefreshToken = await newRefreshToken(profile);
+            await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
+            const ip = req.ip;
+            const userAgent = req.headers['user-agent'];
+            // thêm cookie vào db
+            await TokenService.addToken({
+                ip,
+                device_ID,
+                userAgent,
+                user_ID: newUser._id,
+                token: RefreshToken,
+            });
+            // trả về dữ liệu
+            const { password, ...other } = newUser._doc;
+            return res.status(200).json({ data: other, meta: { AccessToken } });
         } catch (error) {
+            //Kiểm tra lỗi dung lượng quá lớn
+            if (error.code === 'LIMIT_FILE_SIZE') {
+                return res
+                    .status(413)
+                    .json({ error: 'File too large. Max size is 2MB.' });
+            }
             console.log(error);
+            if (file) {
+                await CloudinaryService.deleteCloudinaryFile(file.filename);
+            }
             return res.status(500).json({ error: error.message });
         }
     }

@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const VerifyCodesSchema = new Schema(
     {
-        user_ID: { type: Schema.Types.ObjectId, require, unique },
-        code: { type: String, require },
-        device_ID: { type: String, require },
+        user_ID: { type: Schema.Types.ObjectId, require: true },
+        code: { type: String, require: true },
+        device_ID: { type: String, require: true },
         expiresAt: { type: Date },
     },
     { timeseries: true, collection: 'VerifyCodes' },

@@ -4,12 +4,15 @@ const NotificationService = require('./NotificationService');
 const SocketService = require('./SocketService');
 
 class MailerServices {
-    async sendMailer({
+    async sendMailerAndNotify({
+        type = '',
         to = [],
+        user_IDs = [],
         subject = '',
         text = '',
         first_name = '',
         last_name = '',
+        is_sendAll = false,
     } = {}) {
         if (to.length < 1) {
             return {
@@ -19,68 +22,19 @@ class MailerServices {
         }
         const html = this.designHtmlMailer({ first_name, last_name, text });
         const info = await emailSender({ to, html, subject, text });
+        // lưu thông báo vào db
+        await NotificationService.addNotify({
+            title: subject,
+            message: text,
+            user_IDs,
+            notifiable_type: type,
+            is_sendAll,
+        });
         return {
             status: 200,
             message: 'Send and Notify mail successful',
             info,
         };
-    }
-    async sendMailerAndNotify({
-        io,
-        user_IDs = [],
-        type = '', //LOGIN_WARING, WELCOME
-        to = [],
-        userAgent = '',
-        first_name = '',
-        last_name = '',
-        subject = '',
-        text = '',
-    } = {}) {
-        try {
-            if (to.length < 1) {
-                return {
-                    status: 400,
-                    error: 'Missing recipient email address',
-                };
-            }
-            if (type && MailTemplates[type]) {
-                const template = MailTemplates[type];
-                subject = subject || template.subject;
-                text =
-                    text ||
-                    (typeof template.text === 'function'
-                        ? template.text(userAgent)
-                        : template.text);
-            }
-            // gửi thông báo bên gmail
-            await this.sendMailer({ to, subject, text, first_name, last_name });
-            if (is_sendNotify) {
-                // gửi thông báo đến cho người dùng
-                const data = {
-                    subject,
-                    text,
-                };
-                SocketService.emitToUsers(io, user_IDs, type, data);
-                // lưu thông báo vào db
-                await NotificationService.addNotify({
-                    title: subject,
-                    message: text,
-                    user_IDs,
-                    notifiable_type: type,
-                });
-            }
-            return {
-                status: 200,
-                message: 'Send and Notify mail successful',
-                info,
-            };
-        } catch (error) {
-            console.log(error);
-            return {
-                status: 500,
-                error: error.message,
-            };
-        }
     }
 
     designHtmlMailer({ first_name = '', last_name = '', text = '' } = {}) {

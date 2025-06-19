@@ -4,6 +4,7 @@ const router = express.Router();
 
 const AuthController = require('../app/Controller/AuthController');
 const JwtMiddleware = require('../app/Middleware/JwtMiddleware');
+const { uploadCloudinary } = require('../app/Middleware/CloudinaryMiddleware');
 
 // [POST] --/auth
 router.post(
@@ -17,7 +18,11 @@ router.post(
     AuthController.sendCodeTOMail,
 );
 router.post('/login', AuthController.login);
-router.post('/register', AuthController.register);
+router.post(
+    '/register',
+    uploadCloudinary({ type: 'Avatar' }).single('file'),
+    AuthController.register,
+);
 router.post('/refresh', AuthController.refresh);
 router.post('/logout', AuthController.logout);
 

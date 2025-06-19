@@ -5,13 +5,24 @@ const Schema = mongoose.Schema;
 
 const UsersSchema = new Schema(
     {
-        username: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            minlength: 6,
+            maxlength: 15,
+        },
+        password: { type: String, minlength: 8 },
         email: { type: String, required: true },
-        role: { type: String, required: true, enum: ['User', ' Admin'] },
+        role: {
+            type: String,
+            required: true,
+            enum: ['User', 'Admin'],
+            default: 'User',
+        },
         avatar: { type: String },
-        first_name: { type: String },
-        last_name: { type: String },
+        first_name: { type: String, minlength: 1, maxlength: 30 },
+        last_name: { type: String, minlength: 1, maxlength: 30 },
         is_blocked: { type: Boolean, default: false },
     },
     { timeseries: true, collection: 'Users' },

@@ -9,7 +9,7 @@ const CategoriesSchema = new Schema(
         name: { type: String, required: true, unique: true },
         slug: { type: String, slug: 'name' },
     },
-    { timeseries: true, collection: 'Categories' },
+    { timestamps: true, collection: 'Categories' },
 );
 
 // plugin

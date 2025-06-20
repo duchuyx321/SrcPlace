@@ -1,4 +1,5 @@
 // model
+const Wallet = require('../Model/Wallet');
 const Users = require('../Model/Users');
 const TrustedDevices = require('../Model/TrustedDevices');
 // util
@@ -227,6 +228,9 @@ class AuthController {
                     .status(resultSendMail.status)
                     .json({ error: resultSendMail.error });
             }
+            // Khởi tạo wallet cho người dùng
+            const wallet = new Wallet({ user_ID: newUser._id });
+            await wallet.save();
             // lấy token
             const device_ID = await newDeviceID();
             const profile = {

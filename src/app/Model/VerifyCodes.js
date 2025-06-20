@@ -9,7 +9,7 @@ const VerifyCodesSchema = new Schema(
         device_ID: { type: String, require: true },
         expiresAt: { type: Date },
     },
-    { timeseries: true, collection: 'VerifyCodes' },
+    { timestamps: true, collection: 'VerifyCodes' },
 );
 
 module.exports = mongoose.model('VerifyCodes', VerifyCodesSchema);

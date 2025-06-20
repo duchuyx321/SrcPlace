@@ -16,7 +16,7 @@ const PaymentMethodsSchema = new Schema(
         },
         image_url: { type: String },
     },
-    { timeseries: true, collection: 'PaymentMethods' },
+    { timestamps: true, collection: 'PaymentMethods' },
 );
 
 // plugin

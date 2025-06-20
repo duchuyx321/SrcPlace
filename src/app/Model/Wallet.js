@@ -7,9 +7,9 @@ const WalletSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true, unique: true },
         balance: { type: Number, default: 0 },
-        unit: { type: String, enum: ['VND', ' USD'], default: 0 },
+        unit: { type: String, enum: ['VND', ' USD'], default: 'VND' },
     },
-    { timeseries: true, collection: 'Wallet' },
+    { timestamps: true, collection: 'Wallet' },
 );
 
 // plugin

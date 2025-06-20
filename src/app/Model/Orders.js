@@ -11,7 +11,7 @@ const OrdersSchema = new Schema(
         paymentMethod_ID: { type: Schema.Types.ObjectId, required: true },
         price: { type: Number, required: true },
     },
-    { timeseries: true, collection: 'Orders' },
+    { timestamps: true, collection: 'Orders' },
 );
 
 // plugin

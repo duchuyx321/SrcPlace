@@ -12,12 +12,11 @@ const PaymentsSchema = new Schema(
             required: true,
             enum: ['pending', ' success', ' failed'],
         },
-        order_ID: { type: Schema.Types.ObjectId, required: true },
         transactionCode: { type: String, required: true },
         price: { type: Number, required: true },
         paidAt: { type: Date, required: true },
     },
-    { timeseries: true, collection: 'Payments' },
+    { timestamps: true, collection: 'Payments' },
 );
 
 // plugin

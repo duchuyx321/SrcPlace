@@ -9,7 +9,7 @@ const DownloadsSchema = new Schema(
         user_ID: { type: Schema.Types.ObjectId, required: true },
         order_ID: { type: Schema.Types.ObjectId, required: true },
     },
-    { timeseries: true, collection: 'Downloads' },
+    { timestamps: true, collection: 'Downloads' },
 );
 
 // plugin

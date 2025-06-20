@@ -25,7 +25,7 @@ const UsersSchema = new Schema(
         last_name: { type: String, minlength: 1, maxlength: 30 },
         is_blocked: { type: Boolean, default: false },
     },
-    { timeseries: true, collection: 'Users' },
+    { timestamps: true, collection: 'Users' },
 );
 
 //  plugin

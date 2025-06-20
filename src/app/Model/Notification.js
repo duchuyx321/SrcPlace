@@ -12,7 +12,7 @@ const NotificationSchema = new Schema(
         notifiable_meta: { type: Object, default: {} },
         is_sendAll: { type: Boolean, default: false },
     },
-    { timeseries: true, collection: 'Notification' },
+    { timestamps: true, collection: 'Notification' },
 );
 
 // plugin

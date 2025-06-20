@@ -16,7 +16,7 @@ const TrustedDevicesSchema = new Schema(
         expiresAt: { type: Date },
         lastUsedAt: { type: Date },
     },
-    { timeseries: true, collection: 'TrustedDevices' },
+    { timestamps: true, collection: 'TrustedDevices' },
 );
 // index
 TrustedDevicesSchema.index({ user_ID: 1, device_ID: 1 }, { unique: true });

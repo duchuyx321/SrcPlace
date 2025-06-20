@@ -2,10 +2,10 @@ const public = require('./public');
 const user = require('./User');
 const admin = require('./Admin');
 const auth = require('./auth');
-
+const JwtMiddleware = require('../app/Middleware/JwtMiddleware');
 const route = (app) => {
     // router user
-    app.use('/user', user);
+    app.use('/user', JwtMiddleware.verifyAccessToken, user);
     // router admin
     app.use('/admin', admin);
     // router auth

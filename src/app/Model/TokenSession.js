@@ -16,7 +16,7 @@ const TokenSessionSchema = new Schema(
         is_revoked: { type: Boolean, default: false },
         expiresAt: { type: Date },
     },
-    { timeseries: true, collection: 'TokenSession' },
+    { timestamps: true, collection: 'TokenSession' },
 );
 // index
 TokenSessionSchema.index({ user_ID: 1, device_ID: 1 }, { unique: true });

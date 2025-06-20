@@ -9,7 +9,7 @@ const WalletTransactionSchema = new Schema(
         amount: { type: Number, required: true },
         description: { type: String },
     },
-    { timeseries: true, collection: 'WalletTransaction' },
+    { timestamps: true, collection: 'WalletTransaction' },
 );
 
 // plugin

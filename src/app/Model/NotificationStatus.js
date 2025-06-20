@@ -10,7 +10,7 @@ const NotificationStatusSchema = new Schema(
         is_read: { type: Boolean, default: false },
         readAt: { type: Date },
     },
-    { timeseries: true, collection: 'NotificationStatus' },
+    { timestamps: true, collection: 'NotificationStatus' },
 );
 
 // plugin

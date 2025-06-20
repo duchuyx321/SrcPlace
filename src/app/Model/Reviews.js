@@ -11,7 +11,7 @@ const ReviewsSchema = new Schema(
         reviewable_type: { type: String },
         comment: { type: String },
     },
-    { timeseries: true, collection: 'Reviews' },
+    { timestamps: true, collection: 'Reviews' },
 );
 
 // plugin

@@ -8,7 +8,7 @@ const TechTagsSchema = new Schema(
         name: { type: String, required: true, unique: true },
         color: { type: String },
     },
-    { timeseries: true, collection: 'TechTags' },
+    { timestamps: true, collection: 'TechTags' },
 );
 
 // plugin

@@ -12,7 +12,7 @@ const TwoFactorAuthSchema = new Schema(
         backupCodes: { type: String, required: true },
         qr_url: { type: String },
     },
-    { timeseries: true, collection: 'TwoFactorAuth' },
+    { timestamps: true, collection: 'TwoFactorAuth' },
 );
 
 // plugin

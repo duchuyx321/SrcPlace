@@ -20,7 +20,7 @@ const ProjectsSchema = new Schema(
         sold: { type: Number, default: 0 },
         slug: { type: String, slug: 'title' },
     },
-    { timeseries: true, collection: 'Projects' },
+    { timestamps: true, collection: 'Projects' },
 );
 
 // plugin

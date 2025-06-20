@@ -20,7 +20,7 @@ const MailerServices = require('../../services/MailerServices');
 const { newCode } = require('../../util/codeUtil');
 const MailTemplates = require('../../config/Mail/MailTemplates');
 const VerifyCodesServices = require('../../services/VerifyCodesServices');
-const TowFactorAuthService = require('../../services/TowFactorAuthService');
+const TowFactorAuthService = require('../../services/TwoFactorAuthService');
 const CloudinaryService = require('../../services/CloudinaryService');
 class AuthController {
     // [POST] --/auth/login

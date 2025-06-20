@@ -7,7 +7,12 @@ const route = (app) => {
     // router user
     app.use('/user', JwtMiddleware.verifyAccessToken, user);
     // router admin
-    app.use('/admin', admin);
+    app.use(
+        '/admin',
+        JwtMiddleware.verifyAccessToken,
+        JwtMiddleware.verifyRoleUser('Admin'),
+        admin,
+    );
     // router auth
     app.use('/auth', auth);
     // routes without login

@@ -102,6 +102,26 @@ class JwtMiddleware {
             return res.status(503).json({ error: error.message });
         }
     }
+    verifyRoleUser(role) {
+        return (req, res, next) => {
+            try {
+                let validRoles = ['User', 'Admin'].includes(role);
+                if (!validRoles) {
+                    console.log('role không hợp lệ!');
+                    return res.status(504).json({ error: 'Invalid role!' });
+                }
+                const roleJwt = req.user.role;
+                if (role !== roleJwt)
+                    return res.status(403).json({
+                        error: 'User does not have sufficient access rights',
+                    });
+                next();
+            } catch (error) {
+                console.log(error);
+                return res.status(501).json({ error: error.message });
+            }
+        };
+    }
 }
 
 module.exports = new JwtMiddleware();

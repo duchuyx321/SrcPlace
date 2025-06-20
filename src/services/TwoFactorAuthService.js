@@ -5,7 +5,7 @@ const {
 } = require('../util/TwoFactorAuthUtil');
 
 class TwoFactorAuthService {
-    async createTowFactorAuth(user_ID) {
+    async createTwoFactorAuth(user_ID) {
         try {
             const newTwoFA = await createTowFactorAuth();
             if (newTwoFA.status !== 200) {
@@ -19,6 +19,7 @@ class TwoFactorAuthService {
                 secret,
                 backupCodes,
                 qrCodeImage,
+                is_enabled: true,
             });
             await newTwoFactorAuth.save();
             return {

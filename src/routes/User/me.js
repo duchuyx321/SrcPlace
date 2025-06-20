@@ -10,13 +10,21 @@ const VerifyCodesMiddleware = require('../../app/Middleware/VerifyCodeMiddleware
 
 // [GET]
 router.get('/', MeController.getMyProfile);
+// [POST]
+router.post('/send-mail', MeController.sendCodeToMail);
+router.post(
+    '/verifyCode',
+    VerifyCodesMiddleware.VerifyCode,
+    MeController.verifyCode,
+);
 // [PATCH]
 router.patch(
     '/',
     uploadCloudinary({ type: 'Avatar' }).single('avatar'),
-    MeController,
+    MeController.updateMyProfile,
 );
 // [PATCH]
-router.patch('/password', VerifyCodesMiddleware.VerifyCode);
+router.patch('/password', MeController.changePassword);
+// [PATCH]
 
 module.exports = router;

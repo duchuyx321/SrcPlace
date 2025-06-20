@@ -42,10 +42,11 @@ class UserController {
             return res.status(501).json({ error: error.message });
         }
     }
-    // [POST] --/user/me/verifyCode
-    async sendCodeTOMail(req, res, next) {
+    // [POST] --/user/me/send-mail
+    async sendCodeToMail(req, res, next) {
         try {
             const { user_ID, device_ID } = req.user;
+
             const user = await Users.findOne({ _id: user_ID });
             if (!user) {
                 return res.status(503).json({ error: 'Users do not exist!' });
@@ -80,6 +81,14 @@ class UserController {
             });
         } catch (error) {
             console.log(error);
+            return res.status(501).json({ error: error.message });
+        }
+    }
+    async verifyCode(req, res, next) {
+        try {
+            return res.status(200).json({ data: 'code successful' });
+        } catch (error) {
+            console.log(error.message);
             return res.status(501).json({ error: error.message });
         }
     }

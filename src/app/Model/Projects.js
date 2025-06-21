@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const ProjectsSchema = new Schema(
     {
-        user_ID: { type: Schema.Types.ObjectId, required: true },
+        user_ID: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
         category_ID: { type: Schema.Types.ObjectId, required: true },
         title: { type: String, required: true },
         price: { type: Number, default: 0 },

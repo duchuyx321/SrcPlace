@@ -1,7 +1,10 @@
 const Orders = require('../Model/Orders');
+const Card = require('../Model/Card');
 const Users = require('../Model/Users');
 const Projects = require('../Model/Projects');
 const Wallet = require('../Model/Wallet');
+const Notification = require('../Model/Notification');
+const NotificationStatus = require('../Model/NotificationStatus');
 
 const CloudinaryService = require('../../services/CloudinaryService');
 const MailerServices = require('../../services/MailerServices');
@@ -35,6 +38,44 @@ class UserController {
                 data: {
                     ...otherUser,
                     orderProjects: projects,
+                },
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(501).json({ error: error.message });
+        }
+    }
+    // [GET] --/user/me/summary
+    async summary(req, res, next) {
+        try {
+            const { user_ID } = req.user;
+            const notifications = await Notification.find({
+                is_sendAll: true,
+            }).select('_id');
+            const notification_IDs = notifications.map((item) => item._id);
+            // Đếm song song
+            const [countNotifyAll, countNotifyNoRead, countCard] =
+                await Promise.all([
+                    NotificationStatus.countDocuments({
+                        notification_ID: { $in: notification_IDs },
+                        is_read: false,
+                    }),
+                    NotificationStatus.countDocuments({
+                        user_ID,
+                        is_read: false,
+                    }),
+                    Card.countDocuments({
+                        user_ID,
+                    }),
+                ]);
+
+            // Tổng số thông báo chưa đọc (gửi all + gửi riêng)
+            const notificationCount =
+                notification_IDs.length - countNotifyAll + countNotifyNoRead;
+            return res.status(200).json({
+                data: {
+                    notificationCount,
+                    countCard,
                 },
             });
         } catch (error) {

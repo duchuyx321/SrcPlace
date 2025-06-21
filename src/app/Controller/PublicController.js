@@ -2,6 +2,14 @@ const Projects = require('../Model/Projects');
 const Categories = require('../Model/Categories');
 
 class PublicController {
+    // [GET]--/overview
+    async overview(req, res, next) {
+        try {
+        } catch (error) {
+            console.log(error);
+            return res.status(501).json();
+        }
+    }
     // [GET] --/?limit=10&page=1
     async getProjects(req, res, next) {
         try {
@@ -9,11 +17,21 @@ class PublicController {
             const page = parseInt(req.query.page) || 1;
             const skip = (page - 1) * limit;
             const [paidProjects, freeProjects] = await Promise.all([
-                Projects.find({ price: { $gt: 0 } })
+                Projects.find({
+                    price: { $gt: 0 },
+                    is_proved: true,
+                    is_published: true,
+                })
+                    .select('title price image_url slug sold')
                     .skip(skip)
                     .limit(limit)
                     .sort({ sold: -1 }),
-                Projects.find({ price: { $eq: 0 } })
+                Projects.find({
+                    price: { $eq: 0 },
+                    is_proved: true,
+                    is_published: true,
+                })
+                    .select('title price image_url slug sold')
                     .skip(skip)
                     .limit(limit)
                     .sort({ sold: -1 }),
@@ -37,13 +55,18 @@ class PublicController {
             if (type === 'free' || type === 'paid') {
                 const query = type === 'paid' ? { $gt: 0 } : { $eq: 0 };
                 projects = await Projects.find({ price: query })
+                    .select('title price image_url slug sold')
                     .skip(skip)
                     .limit(limit)
                     .sort({ sold: -1 });
             } else {
-                projects = await Projects.find({ category_ID: type }).sort({
-                    sold: -1,
-                });
+                projects = await Projects.find({ category_ID: type })
+                    .select('title price image_url slug sold')
+                    .skip(skip)
+                    .limit(limit)
+                    .sort({
+                        sold: -1,
+                    });
             }
             return res.status(200).json({ data: projects });
         } catch (error) {

@@ -95,7 +95,7 @@ class AuthController {
                     device_ID,
                     userAgent,
                     user_ID: user._id,
-                    token: RefreshToken,
+                    token: RefreshToken?.split(' ')[1],
                 });
                 meta = { ...meta, AccessToken };
             } else {
@@ -249,7 +249,7 @@ class AuthController {
                 device_ID,
                 userAgent,
                 user_ID: newUser._id,
-                token: RefreshToken,
+                token: RefreshToken?.split(' ')[1],
             });
             // trả về dữ liệu
             const { password, ...other } = newUser._doc;

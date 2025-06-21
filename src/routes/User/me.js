@@ -10,6 +10,7 @@ const VerifyCodesMiddleware = require('../../app/Middleware/VerifyCodeMiddleware
 
 // [GET]
 router.get('/', MeController.getMyProfile);
+router.get('/summary', MeController.summary);
 // [POST]
 router.post('/send-mail', MeController.sendCodeToMail);
 router.post(

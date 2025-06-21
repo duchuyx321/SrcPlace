@@ -274,7 +274,7 @@ class AuthController {
             // lưu ý cần kiểm tra token và thiết bị
             const profile = req.user;
             const AccessToken = await newAccessToken(profile);
-            return res.status({ data: { meta: { AccessToken } } });
+            return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
@@ -333,6 +333,16 @@ class AuthController {
             const AccessToken = await newAccessToken(profile);
             const RefreshToken = await newRefreshToken(profile);
             await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
+            const ip = req.ip;
+            const userAgent = req.headers['user-agent'];
+            // thêm cookie vào db
+            await TokenService.addToken({
+                ip,
+                device_ID,
+                userAgent,
+                user_ID,
+                token: RefreshToken?.split(' ')[1],
+            });
             return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {
             console.log(error);

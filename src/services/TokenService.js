@@ -13,15 +13,25 @@ class TokenService {
     } = {}) {
         const expiresInMs = ms(process.env.TIME_REFRESH_TOKEN || '7d');
         const expiresAt = new Date(Date.now() + expiresInMs);
-        const newToken = new TokenSession({
-            user_ID,
-            token,
-            device_ID,
-            userAgent,
-            ip,
-            expiresAt,
-        });
-        await newToken.save();
+        await TokenSession.findOneAndUpdateWithDeleted(
+            {
+                user_ID,
+            },
+            {
+                $set: {
+                    token,
+                    device_ID,
+                    userAgent,
+                    ip,
+                    expiresAt,
+                    deleted: false,
+                },
+            },
+            {
+                new: true,
+                upsert: true,
+            },
+        );
         return {
             status: 200,
             message: 'add token successful',

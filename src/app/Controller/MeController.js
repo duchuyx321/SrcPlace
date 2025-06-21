@@ -125,6 +125,7 @@ class UserController {
             return res.status(501).json({ error: error.message });
         }
     }
+    // [POST] --/user/me/verifyCode
     async verifyCode(req, res, next) {
         try {
             return res.status(200).json({ data: 'code successful' });

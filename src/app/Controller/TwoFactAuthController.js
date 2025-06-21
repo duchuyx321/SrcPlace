@@ -24,6 +24,7 @@ class TwoFactAuthController {
             return res.status(501).json({ error: error.message });
         }
     }
+    // [POST] --/user/2fa/enable
     async enableTwoFA(req, res, next) {
         try {
             const { user_ID } = req.user;
@@ -52,6 +53,7 @@ class TwoFactAuthController {
             return res.status(501).json({ error: error.message });
         }
     }
+    // [POST] --/user/2fa/disable
     async disableTwoFA(req, res, next) {
         try {
             const { user_ID } = req.user;

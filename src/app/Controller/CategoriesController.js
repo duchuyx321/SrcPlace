@@ -66,7 +66,7 @@ class CategoriesController {
             return res.status(501).json({ error: error.message });
         }
     }
-    // [PATCH] --/edit/categories/edit
+    // [PATCH] --/admin/categories/edit
     async editCategories(req, res, next) {
         try {
             const { categories_ID, name } = req.body;

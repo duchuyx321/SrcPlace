@@ -33,11 +33,13 @@ class JwtMiddleware {
                 return res.status(403).json({ error: 'user is not login!' });
             }
             const accessToken = authHeader.split(' ')[1];
+            console.log({ accessToken });
             jwt.verify(
                 accessToken,
                 process.env.JWT_ACCESS_TOKEN,
                 (err, data) => {
                     if (err) {
+                        console.log(err);
                         return res.status(403).json({ error: err.message });
                     }
                     const user = {

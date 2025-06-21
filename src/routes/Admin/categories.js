@@ -5,7 +5,7 @@ const router = express.Router();
 const CategoriesController = require('../../app/Controller/CategoriesController');
 
 // [GET]
-router.get('/overview');
+router.get('/overview', CategoriesController.overview);
 // [POST]
 router.post('/add', CategoriesController.addCategories);
 // [PATCH]

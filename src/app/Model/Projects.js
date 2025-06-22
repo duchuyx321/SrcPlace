@@ -18,7 +18,11 @@ const ProjectsSchema = new Schema(
         is_proved: { type: Boolean, default: true },
         is_published: { type: Boolean, default: true },
         sold: { type: Number, default: 0 },
-        slug: { type: String, slug: 'title' },
+        slug: {
+            type: String,
+            slug: 'title',
+            uniqueGroupSlug: 'slug',
+        },
     },
     { timestamps: true, collection: 'Projects' },
 );

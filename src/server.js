@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -28,6 +29,8 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//file tĩnh
+app.use(express.static(path.join(__dirname, 'Assets')));
 // setup socket.io
 const io = new Server(server, {
     cors: {

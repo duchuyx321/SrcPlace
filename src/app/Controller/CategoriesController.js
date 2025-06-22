@@ -3,10 +3,8 @@ class CategoriesController {
     // [GET] --/admin/categories/overview?filter=active&sort
     async overview(req, res, next) {
         try {
-            const { filter, sort } = req.query || {
-                filter: 'active',
-                sort: 'createdAt_desc',
-            };
+            const filter = req.query.filter || 'active';
+            const sort = req.query.sort || 'createdAt_desc';
             const listSort = {
                 createdAt_asc: { createdAt: 1 },
                 createdAt_desc: { createdAt: -1 },

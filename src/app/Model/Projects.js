@@ -15,6 +15,7 @@ const ProjectsSchema = new Schema(
         image_url: { type: String, required: true },
         video_url: { type: String, required: true },
         download_url: { type: String },
+        source_ID: { type: String },
         is_proved: { type: Boolean, default: true },
         is_published: { type: Boolean, default: true },
         sold: { type: Number, default: 0 },

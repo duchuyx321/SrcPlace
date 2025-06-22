@@ -7,7 +7,7 @@ const PaymentMethodsSchema = new Schema(
     {
         name: { type: String, required: true },
         code: { type: String, required: true },
-        status: { type: String, default: active },
+        status: { type: String, enum: ['active', 'inactive'], default: active },
         type: { type: String },
         config: {
             apiKey: { type: String, required: true }, // cần mã hóa trước khi đưa vào code

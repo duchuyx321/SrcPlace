@@ -1,8 +1,9 @@
+const CloudinaryService = require('../../services/CloudinaryService');
 const { encrypt, decrypt } = require('../../util/keyUtil');
 const PaymentMethod = require('../Model/PaymentMethods');
 
-class PaymentMethodController {
-    // [GET] --/admin/payments/overview
+class PaymentMethodsController {
+    // [GET] --/admin/paymentMethods/overview
     async overview(req, res, next) {
         try {
             const [paymentMethods, countPaymentMethodDelete] =
@@ -20,7 +21,7 @@ class PaymentMethodController {
             console.log(error);
         }
     }
-    // [POST] --/admin/paymentMethod/add
+    // [POST] --/admin/paymentMethods/add
     async addPaymentMethod(req, res, next) {
         const file = req.file;
         try {
@@ -79,33 +80,102 @@ class PaymentMethodController {
             return res.status(501).json({ error: error.message });
         }
     }
-    // [PATCH] --/admin/paymentMethod/edit
+    // [PATCH] --/admin/paymentMethods/edit
     async editPaymentMethod(req, res, next) {
+        const file = req.file;
         try {
+            let { paymentMethod_ID, ...attributeChanges } = req.body;
+            if (file) {
+                attributeChanges = {
+                    ...attributeChanges,
+                    image_url: file.path,
+                };
+            }
+            if (Object.keys(attributeChanges).length === 0) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res
+                    .status(403)
+                    .json({ error: 'data upload not enough!' });
+            }
+            const edit = await PaymentMethod.updateOne(
+                {
+                    _id: paymentMethod_ID,
+                },
+                attributeChanges,
+            );
+            if (edit.modifiedCount === 0) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res
+                    .status(501)
+                    .json({ error: 'edit payment method is false!' });
+            }
+            return res.status(200).json({
+                data: { message: 'edit payment method is successful!' },
+            });
         } catch (error) {
+            if (file) {
+                await CloudinaryService.deleteCloudinaryFile(file.filename);
+            }
             console.log(error);
             return res.status(501).json({ error: error.message });
         }
     }
-    // [PATCH] --/admin/paymentMethod/restore
+    // [PATCH] --/admin/paymentMethods/restore
     async restorePaymentMethod(req, res, next) {
         try {
+            const [paymentMethod_IDs] = req.body;
+            if (
+                !Array.isArray(paymentMethod_IDs) ||
+                paymentMethod_IDs.length === 0
+            ) {
+                return res.status(403).json({ error: 'data is not exits!' });
+            }
+            await PaymentMethod.restore({ _id: { $in: paymentMethod_IDs } });
+            return res
+                .status(200)
+                .json({ data: { message: 'restore is successful' } });
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });
         }
     }
-    // [DELETE] --/admin/paymentMethod/delete
+    // [DELETE] --/admin/paymentMethods/delete
     async deletePaymentMethod(req, res, next) {
         try {
+            const { paymentMethod_IDs } = req.body;
+            if (
+                !Array.isArray(paymentMethod_IDs) ||
+                paymentMethod_IDs.length === 0
+            ) {
+                return res.status(403).json({ error: 'data is not exits!' });
+            }
+            await PaymentMethod.delete({ _id: { $in: paymentMethod_IDs } });
+            return res
+                .status(200)
+                .json({ data: { message: 'delete is successful' } });
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });
         }
     }
-    // [DELETE] --/admin/paymentMethod/destroy
+    // [DELETE] --/admin/paymentMethods/destroy
     async destroyPaymentMethod(req, res, next) {
         try {
+            const { paymentMethod_IDs } = req.body;
+            if (
+                !Array.isArray(paymentMethod_IDs) ||
+                paymentMethod_IDs.length === 0
+            ) {
+                return res.status(403).json({ error: 'data is not exits!' });
+            }
+            await PaymentMethod.deleteMany({ _id: { $in: paymentMethod_IDs } });
+            return res
+                .status(200)
+                .json({ data: { message: 'destroy is successful' } });
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });
@@ -113,4 +183,4 @@ class PaymentMethodController {
     }
 }
 
-module.exports = new PaymentMethodController();
+module.exports = new PaymentMethodsController();

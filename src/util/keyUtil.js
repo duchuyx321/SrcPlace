@@ -1,4 +1,4 @@
-const crypto = require('crypto-js');
+const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
 const listType = {

@@ -83,7 +83,7 @@ class AuthController {
             // kiểm tra và lấy token theo đúng yêu cầu
             if (!is_session && is_trustDevices) {
                 const AccessToken = await newAccessToken(profile);
-                const RefreshToken = await newRefreshToken(profile);
+                const RefreshToken = await newRefreshToken({ profile });
                 await res.cookie(
                     'refreshToken',
                     RefreshToken,
@@ -142,7 +142,8 @@ class AuthController {
         try {
             const { username, email, first_name, last_name } = req.body;
             const pass = req.body.password;
-            const avatar = file?.path || '';
+            const image_url = file?.path || '';
+            const public_id = file?.filename;
             if (!username || !pass || !email || !first_name || !last_name) {
                 if (file) {
                     await CloudinaryService.deleteCloudinaryFile(file.filename);
@@ -204,7 +205,7 @@ class AuthController {
                 username,
                 email,
                 password: hashPass,
-                avatar,
+                avatar: { image_url, public_id },
                 first_name,
                 last_name,
             });
@@ -239,7 +240,7 @@ class AuthController {
                 role: newUser.role,
             };
             const AccessToken = await newAccessToken(profile);
-            const RefreshToken = await newRefreshToken(profile);
+            const RefreshToken = await newRefreshToken({ profile });
             await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
             const ip = req.ip;
             const userAgent = req.headers['user-agent'];
@@ -272,8 +273,24 @@ class AuthController {
     async refresh(req, res, next) {
         try {
             // lưu ý cần kiểm tra token và thiết bị
-            const profile = req.user;
+            const { expiresAt, ...profile } = req.user;
             const AccessToken = await newAccessToken(profile);
+            const expUnix = Math.floor(new Date(expiresAt).getTime() / 1000);
+            const RefreshToken = await newRefreshToken({
+                profile,
+                exp: expUnix,
+            });
+            await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
+            const ip = req.ip;
+            const userAgent = req.headers['user-agent'];
+            // thêm cookie vào db
+            await TokenService.addToken({
+                ip,
+                device_ID: profile.device_ID,
+                userAgent,
+                user_ID: profile.user_ID,
+                token: RefreshToken?.split(' ')[1],
+            });
             return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {
             console.log(error);

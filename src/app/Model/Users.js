@@ -20,7 +20,7 @@ const UsersSchema = new Schema(
             enum: ['User', 'Admin'],
             default: 'User',
         },
-        avatar: { type: String },
+        avatar: { image_url: { type: String }, public_id: { type: String } },
         first_name: { type: String, minlength: 1, maxlength: 30 },
         last_name: { type: String, minlength: 1, maxlength: 30 },
         is_blocked: { type: Boolean, default: false },

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const TokenSession = require('../Model/TokenSession');
+const Users = require('../Model/Users');
 require('dotenv').config();
 class JwtMiddleware {
     async verifyTempToken(req, res, next) {
@@ -93,6 +94,7 @@ class JwtMiddleware {
                         user_ID,
                         device_ID,
                         role,
+                        expiresAt: checkLoginSession.expiresAt,
                     };
                     req.user = user;
                     next();
@@ -122,6 +124,24 @@ class JwtMiddleware {
                 return res.status(501).json({ error: error.message });
             }
         };
+    }
+    async verifyUserLocked(req, res, next) {
+        try {
+            const { user_ID } = req.user;
+            const user = await Users.findById(user_ID).select('is_blocked');
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            if (user.is_blocked) {
+                return res
+                    .status(403)
+                    .json({ error: 'Your account has been blocked' });
+            }
+            next();
+        } catch (error) {
+            console.log(error);
+            return res.status(501).json({ error: error.message });
+        }
     }
 }
 

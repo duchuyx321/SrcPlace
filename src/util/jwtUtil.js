@@ -13,14 +13,19 @@ const newAccessToken = async (profile) => {
     );
     return `Bearer ${newAccessToken}`;
 };
-const newRefreshToken = async (profile) => {
+const newRefreshToken = async ({ profile = {}, exp = 0 } = {}) => {
+    let options = { algorithm: 'HS256' };
+
+    if (exp !== 0) {
+        options.exp = exp; // tuyệt đối, unix timestamp
+    } else {
+        options.expiresIn = process.env.TIME_REFRESH_TOKEN || '7d'; // tương đối
+    }
+
     const newRefreshToken = await jwt.sign(
         profile,
         process.env.JWT_REFRESH_TOKEN,
-        {
-            algorithm: 'HS256',
-            expiresIn: process.env.TIME_REFRESH_TOKEN || '1h',
-        },
+        options,
     );
     return `Bearer ${newRefreshToken}`;
 };

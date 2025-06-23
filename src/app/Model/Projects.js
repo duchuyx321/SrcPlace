@@ -12,7 +12,10 @@ const ProjectsSchema = new Schema(
         price: { type: Number, default: 0 },
         description: { type: String },
         teachTags: [{ type: String }],
-        image_url: { type: String, required: true },
+        thumbnail: {
+            image_url: { type: String },
+            public_id: { type: String },
+        },
         video_url: { type: String, required: true },
         download_url: { type: String },
         source_ID: { type: String },

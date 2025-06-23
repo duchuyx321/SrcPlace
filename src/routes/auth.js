@@ -26,6 +26,7 @@ router.post(
 router.post(
     '/refresh',
     JwtMiddleware.verifyRefreshToken,
+    JwtMiddleware.verifyUserLocked,
     AuthController.refresh,
 );
 router.post('/logout', AuthController.logout);

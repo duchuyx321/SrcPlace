@@ -18,7 +18,10 @@ const PaymentMethodsSchema = new Schema(
             callbackUrl: { type: String, required: true },
             partnerCode: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
         },
-        image_url: { type: String },
+        logo: {
+            image_url: { type: String },
+            public_id: { type: String },
+        },
     },
     { timestamps: true, collection: 'PaymentMethods' },
 );

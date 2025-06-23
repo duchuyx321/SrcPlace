@@ -130,9 +130,13 @@ class ProjectsController {
     async editProjects(req, res, next) {
         const file = req.file;
         try {
-            const { project_ID, ...requiredFields } = req.body;
+            const { project_ID, public_id, ...requiredFields } = req.body;
             if (file) {
-                requiredFields.image_url = file.path;
+                requiredFields.thumbnail = {
+                    image_url: file.path,
+                    public_id: file.fileName,
+                };
+                await CloudinaryService.deleteCloudinaryFile(public_id);
             }
             if (!requiredFields) {
                 if (file) {

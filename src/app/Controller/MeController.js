@@ -138,7 +138,7 @@ class UserController {
     async updateMyProfile(req, nes, next) {
         const file = req.file;
         try {
-            let updates = req.body;
+            let { public_id, ...updates } = req.body;
             const { user_ID } = req.user;
             if (!updates) {
                 if (file) {
@@ -147,9 +147,13 @@ class UserController {
                 return res.status(403).json({ error: 'no data to upload!' });
             }
             if (file?.path) {
-                updates = { ...updates, avatar: file.path };
+                updates.avatar = {
+                    image_url: file.path,
+                    public_id: file.filename,
+                };
+                await CloudinaryService.deleteCloudinaryFile(public_id);
             }
-            const result = await Users.updateMany(
+            const result = await Users.updateOne(
                 { _id: user_ID },
                 { $set: updates },
             );

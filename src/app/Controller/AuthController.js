@@ -290,6 +290,7 @@ class AuthController {
                 userAgent,
                 user_ID: profile.user_ID,
                 token: RefreshToken?.split(' ')[1],
+                expiresAt,
             });
             return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {
@@ -359,6 +360,7 @@ class AuthController {
                 userAgent,
                 user_ID,
                 token: RefreshToken?.split(' ')[1],
+                expiresAt,
             });
             return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {

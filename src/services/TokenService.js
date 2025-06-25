@@ -10,9 +10,12 @@ class TokenService {
         device_ID = '',
         userAgent = '',
         ip = '',
+        expiresAt = '',
     } = {}) {
-        const expiresInMs = ms(process.env.TIME_REFRESH_TOKEN || '7d');
-        const expiresAt = new Date(Date.now() + expiresInMs);
+        if (!expiresAt) {
+            const expiresInMs = ms(process.env.TIME_REFRESH_TOKEN || '7d');
+            expiresAt = new Date(Date.now() + expiresInMs);
+        }
         await TokenSession.findOneAndUpdateWithDeleted(
             {
                 user_ID,

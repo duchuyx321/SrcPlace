@@ -15,9 +15,8 @@ const newAccessToken = async (profile) => {
 };
 const newRefreshToken = async ({ profile = {}, exp = 0 } = {}) => {
     let options = { algorithm: 'HS256' };
-
     if (exp !== 0) {
-        options.exp = exp; // tuyệt đối, unix timestamp
+        profile.exp = exp; // tuyệt đối, unix timestamp
     } else {
         options.expiresIn = process.env.TIME_REFRESH_TOKEN || '7d'; // tương đối
     }

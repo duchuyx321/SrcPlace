@@ -81,7 +81,7 @@ class JwtMiddleware {
                         userAgent,
                         token: refreshToken,
                         is_revoked: false,
-                    });
+                    }).select('expiresAt');
                     if (
                         !checkLoginSession ||
                         checkLoginSession.expiresAt < now

@@ -10,6 +10,11 @@ const OrdersSchema = new Schema(
         project_ID: { type: Schema.Types.ObjectId, required: true },
         paymentMethod_ID: { type: Schema.Types.ObjectId, required: true },
         price: { type: Number, required: true },
+        status: {
+            type: String,
+            required: true,
+            enum: ['pending', 'paid', 'cancelled'],
+        },
     },
     { timestamps: true, collection: 'Orders' },
 );

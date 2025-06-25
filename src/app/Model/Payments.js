@@ -10,7 +10,7 @@ const PaymentsSchema = new Schema(
         status: {
             type: String,
             required: true,
-            enum: ['pending', ' success', ' failed'],
+            enum: ['pending', 'success', 'failed'],
         },
         transactionCode: { type: String, required: true },
         price: { type: Number, required: true },

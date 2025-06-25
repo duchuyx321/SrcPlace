@@ -7,6 +7,7 @@ const WalletTransactionSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true },
         amount: { type: Number, required: true },
+        type: { type: String, enum: ['deposit', 'withdraw', 'refund'] },
         description: { type: String },
     },
     { timestamps: true, collection: 'WalletTransaction' },

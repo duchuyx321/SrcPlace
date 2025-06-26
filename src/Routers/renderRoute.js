@@ -10,7 +10,7 @@ function renderRoute({ Route, data, role = null, index }) {
     let Layout = DefaultLayout;
     if (data.layout) {
         Layout = data.layout;
-    } else if (!data.layout || data.layout === null) {
+    } else if (data.layout === null) {
         Layout = Fragment;
     }
 

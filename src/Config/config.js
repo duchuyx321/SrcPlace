@@ -1,7 +1,6 @@
-import router from "~/Config/router";
+import routers from "~/Config/router";
 
 const config = {
-    router,
+    routers,
 };
-console.log(config);
 export default config;

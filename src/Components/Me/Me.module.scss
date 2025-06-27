@@ -1,0 +1,14 @@
+.wrapper {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--powder-blue);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > img {
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -67,6 +67,19 @@
 .content {
     flex: 1;
 }
+.waring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.6rem;
+    text-align: center;
+    color: var(--powder-blue);
+    & > span {
+        color: rgb(238, 86, 86);
+        font-size: 15rem;
+    }
+}
 .footer {
     min-height: 20rem;
 }

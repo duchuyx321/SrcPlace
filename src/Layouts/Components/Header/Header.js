@@ -6,13 +6,14 @@ import style from "./Header.module.scss";
 import Image from "~/Components/Image";
 import image from "~/Assets/Image";
 import Button from "~/Components/Button";
+import UserActions from "~/Layouts/Components/Header/Components/UserActions";
 
 const cx = classNames.bind(style);
 function Header() {
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
-        setIsLogin(!!AccessToken);
+        // setIsLogin(!!AccessToken);
     }, []);
     return (
         <div className={cx("wrapper")}>
@@ -33,18 +34,22 @@ function Header() {
                             placeholder="Nhập từ khóa tìm kiếm"
                         />
                     </label>
-                    <Button primary small leftIcon={<IoIosSearch />}>
-                        {""}
+                    <Button primary className={cx("btn_search")} small>
+                        <IoIosSearch />
                     </Button>
                 </div>
             </div>
             <div className={cx("right")}>
                 {isLogin ? (
-                    ""
+                    <UserActions />
                 ) : (
                     <>
-                        <Button outline>Đăng nhập</Button>
-                        <Button outline>Đăng kí</Button>
+                        <Button className={cx("btn_login")} primary>
+                            Đăng nhập
+                        </Button>
+                        <Button className={cx("btn_register")} primary>
+                            Đăng kí
+                        </Button>
                     </>
                 )}
             </div>

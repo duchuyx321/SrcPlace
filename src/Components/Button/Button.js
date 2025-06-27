@@ -15,7 +15,7 @@ function Button({
     outline = false,
     leftIcon,
     rightIcon,
-    classNames,
+    className,
     to,
     href,
     onClick,
@@ -43,7 +43,7 @@ function Button({
         Component = "a";
     }
     const classes = cx("wrapper", {
-        [classNames]: classNames,
+        [className]: className,
         primary,
         outline,
         small,

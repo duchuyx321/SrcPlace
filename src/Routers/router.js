@@ -8,7 +8,7 @@ import NotFund from "~/Pages/NotFound.js";
 const PublicRouters = [
     { path: config.routers.home, component: Home },
     // { path: config.routers.detail, component: Detail,  },
-    { path: config.routers.notFound, component: NotFund, Layout: null },
+    { path: config.routers.notFound, component: NotFund, layout: null },
 ];
 // các router cần cần đăng nhập
 const UserRouters = [];

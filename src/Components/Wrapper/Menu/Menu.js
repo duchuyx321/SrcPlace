@@ -1,0 +1,59 @@
+import PropTypes from "prop-types";
+import classNames from "classnames/bind";
+import HeadlessTippy from "@tippyjs/react/headless";
+import { useState } from "react";
+
+import style from "./Menu.module.scss";
+import Wrapper from "~/Components/Wrapper";
+import Header from "./Header";
+import MenuItem from "./MenuItem";
+
+const cx = classNames.bind(style);
+
+function Menu({
+    large = false,
+    small = false,
+    children,
+    items = [],
+    hideOnClick = false,
+    onChange,
+    header,
+    title,
+}) {
+    const resultMenu = (attrs) => {
+        return (
+            <Wrapper large={large} small={small} tabIndex="-1" {...attrs}>
+                {!header && <Header title={title}>dang timf kiem</Header>}
+                {items.length === 0 ? (
+                    <p className={cx("not_item")}>Chưa có sản phẩm!</p>
+                ) : (
+                    items.map((item, index) => {
+                        return <MenuItem key={index} />;
+                    })
+                )}
+            </Wrapper>
+        );
+    };
+    return (
+        <HeadlessTippy
+            visible={hideOnClick}
+            placement="bottom-end"
+            interactive
+            appendTo={document.body}
+            render={(attrs) => resultMenu(attrs)}
+        >
+            {children}
+        </HeadlessTippy>
+    );
+}
+
+Menu.propTypes = {
+    large: PropTypes.bool,
+    small: PropTypes.bool,
+    children: PropTypes.node.isRequired,
+    items: PropTypes.array,
+    hideOnClick: PropTypes.bool,
+    onChange: PropTypes.func,
+};
+
+export default Menu;

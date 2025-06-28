@@ -2,7 +2,7 @@
 
 :root {
     --black-color: #1d1d1d;
-    --white-color: #f3f3f3;
+    --white-color: #fff;
     --outer-space: #464f51;
     --lavender-color: #d1cfe2;
     --powder-blue: #9cadce;
@@ -11,13 +11,13 @@
 }
 
 html {
-    box-sizing: border-box;
     font-size: 62.5%;
 }
 
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 body {
     width: 100%;
@@ -32,6 +32,7 @@ input {
     outline: none;
     text-decoration: none;
     color: var(--black-color);
+    background: none;
 }
 
 // responsive

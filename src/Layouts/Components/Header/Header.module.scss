@@ -32,7 +32,7 @@
         }
     }
     .search {
-        max-width: 24.6rem;
+        max-width: 32.6rem;
     }
 }
 // desktop >= 1024px
@@ -41,7 +41,7 @@
         padding: 1.6rem 3.4rem;
     }
     .search {
-        max-width: 46.6rem;
+        max-width: 42.6rem;
     }
 }
 .wrapper {
@@ -49,7 +49,8 @@
     height: 100%;
     display: flex;
     align-items: center;
-    background-color: var(--white-color);
+    background-color: #f3f3f3dd;
+    user-select: none;
 }
 .left {
     display: flex;

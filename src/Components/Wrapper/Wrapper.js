@@ -6,7 +6,13 @@ import style from "./Wrapper.module.scss";
 
 const cx = classNames.bind(style);
 
-function Wrapper({ children, className, small = false, large = false }) {
+function Wrapper({
+    children,
+    className,
+    isArrow = true,
+    small = false,
+    large = false,
+}) {
     const classes = cx("wrapper", {
         [className]: className,
         small,
@@ -14,9 +20,11 @@ function Wrapper({ children, className, small = false, large = false }) {
     });
     return (
         <>
-            <span className={cx("arrow")}>
-                <TiArrowSortedUp />
-            </span>
+            {isArrow && (
+                <span className={cx("arrow")}>
+                    <TiArrowSortedUp />
+                </span>
+            )}
             <div className={classes}>{children}</div>
         </>
     );

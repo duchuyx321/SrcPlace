@@ -8,20 +8,22 @@ import Button from "~/Components/Button";
 
 const cx = classNames.bind(style);
 
-function MenuItem({ item, isImage = true, isPrice = true }) {
+function MenuItem({ item, isImage = false, isPrice = false, onChange }) {
     return (
         <div className={cx("menuItem")}>
-            <Button className={cx("item")} large>
+            <Button
+                to={item.to}
+                className={cx("item")}
+                onClick={onChange}
+                large
+            >
                 <div className={cx("item_wrapper")}>
                     {isImage && (
                         <span className={cx("item_thumb")}>
                             <Image src="" alt="hình ảnh sản phẩm" />
                         </span>
                     )}
-                    <h3 className={cx("item_title")}>
-                        Đây là nội dung
-                        fuasdgfjksadfgshadgfsadgfsahdgfsudfgsuadyfgsdf
-                    </h3>
+                    <h3 className={cx("item_title")}>{item.name}</h3>
                     {isPrice && (
                         <p className={cx("item_price")}>
                             {formatNumberPrice({ number: 1000000 })}
@@ -36,6 +38,7 @@ function MenuItem({ item, isImage = true, isPrice = true }) {
 MenuItem.propTypes = {
     isImage: PropTypes.bool,
     isPrice: PropTypes.bool,
+    onChange: PropTypes.func,
     item: PropTypes.object, // .isRequired
 };
 

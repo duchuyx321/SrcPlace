@@ -1,12 +1,12 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
-import { IoIosSearch } from "react-icons/io";
 
 import style from "./Header.module.scss";
 import Image from "~/Components/Image";
 import image from "~/Assets/Image";
 import Button from "~/Components/Button";
 import UserActions from "~/Layouts/Components/Header/Components/UserActions";
+import Search from "./Components/Search/Search";
 
 const cx = classNames.bind(style);
 function Header() {
@@ -25,20 +25,7 @@ function Header() {
                 />
                 <h3>Thư Viện Đồ Án</h3>
             </div>
-            <div className={cx("center")}>
-                <div className={cx("search")}>
-                    <label htmlFor="search">
-                        <input
-                            id="search"
-                            type="text"
-                            placeholder="Nhập từ khóa tìm kiếm"
-                        />
-                    </label>
-                    <Button primary className={cx("btn_search")} small>
-                        <IoIosSearch />
-                    </Button>
-                </div>
-            </div>
+            <Search />
             <div className={cx("right")}>
                 {isLogin ? (
                     <UserActions />

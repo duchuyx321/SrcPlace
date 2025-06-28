@@ -1,20 +1,19 @@
-import PropTypes from "prop-types";
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
+import { BsWallet2 } from "react-icons/bs";
+import { useMemo, useState } from "react";
+import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 
 import style from "./Me.module.scss";
 import Image from "~/Components/Image";
+import Menu from "~/Components/Wrapper/Menu";
+import Button from "~/Components/Button";
 
 const cx = classNames.bind(style);
 const MenuItemUser = [
     {
-        key: "me",
-        to: "/me",
-        name: "Trang cá nhân",
-    },
-    {
-        key: "waller",
-        to: "/waller",
+        key: "wallet",
+        to: "/wallet",
         name: "Lịch Sử Nạp Tiền",
     },
     {
@@ -36,26 +35,67 @@ const MenuItemPublic = [
     },
 ];
 
-function Me({ src, role }) {
-    const [MenuItem, setMenuItem] = useState(MenuItemPublic);
-    useEffect(() => {
+function Me() {
+    let role = "User";
+    const [isHide, setIsHide] = useState(false);
+    const MenuItem = useMemo(() => {
         if (role) {
             if (role === "User") {
-                setMenuItem((item) => [...item, ...MenuItemUser]);
+                return [...MenuItemUser, ...MenuItemPublic];
             } else if (role === "Admin") {
-                setMenuItem((item) => [...item, ...MenuItemAdmin]);
+                return [...MenuItemAdmin, ...MenuItemPublic];
             }
         }
-    }, [role]);
+    }, []);
+    const customHeader = () => {
+        return (
+            <Button to="/me" className={cx("wrapper_header")}>
+                <div className={cx("header")}>
+                    <span className={cx("avatar")}>
+                        <Image />
+                        <h3>Đức Huy</h3>
+                    </span>
+                    <div className={cx("wallet")}>
+                        <span className={cx("wallet_title")}>
+                            <BsWallet2 />
+                            <p>Ví Tiền</p>
+                        </span>
+                        <span className={cx("wallet_price")}>
+                            {formatNumberPrice({ number: 1000000000 })}
+                        </span>
+                    </div>
+                </div>
+            </Button>
+        );
+    };
+
+    const handleOnHide = () => {
+        setIsHide(!isHide);
+    };
+    const handleOnChange = (item) => {
+        const innerText = item.target.innerText;
+        switch (innerText) {
+            case "Đăng Xuất":
+                console.log(true);
+                return;
+            default:
+                return;
+        }
+    };
     return (
-        <div className={cx("wrapper")}>
-            <Image src={src} alt="Avatar user" />
-        </div>
+        <Menu
+            onClickHide={setIsHide}
+            hideOnClick={isHide}
+            items={MenuItem}
+            CustomHeader={customHeader()}
+            onChange={handleOnChange}
+            isArrow={false}
+        >
+            <button className={cx("wrapper")} onClick={() => handleOnHide()}>
+                <Image src={""} alt="Avatar user" />
+            </button>
+        </Menu>
     );
 }
 
-Me.propTypes = {
-    src: PropTypes.string,
-    role: PropTypes.string,
-};
 export default Me;

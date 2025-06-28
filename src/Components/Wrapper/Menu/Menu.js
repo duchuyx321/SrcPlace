@@ -16,19 +16,37 @@ function Menu({
     children,
     items = [],
     hideOnClick = false,
+    onClickHide,
+    isArrow = true,
     onChange,
-    header,
+    CustomHeader,
     title,
+    isImage = false,
+    isPrice = false,
 }) {
     const resultMenu = (attrs) => {
         return (
-            <Wrapper large={large} small={small} tabIndex="-1" {...attrs}>
-                {!header && <Header title={title}>dang timf kiem</Header>}
+            <Wrapper
+                large={large}
+                isArrow={isArrow}
+                small={small}
+                tabIndex="-1"
+                {...attrs}
+            >
+                {CustomHeader || <Header title={title}>dang timf kiem</Header>}
                 {items.length === 0 ? (
                     <p className={cx("not_item")}>Chưa có sản phẩm!</p>
                 ) : (
                     items.map((item, index) => {
-                        return <MenuItem key={index} />;
+                        return (
+                            <MenuItem
+                                isImage={isImage}
+                                isPrice={isPrice}
+                                onChange={onChange}
+                                key={index}
+                                item={item}
+                            />
+                        );
                     })
                 )}
             </Wrapper>
@@ -36,11 +54,14 @@ function Menu({
     };
     return (
         <HeadlessTippy
+            delay={[0, 700]}
+            offset={[12, 8]}
             visible={hideOnClick}
             placement="bottom-end"
             interactive
             appendTo={document.body}
             render={(attrs) => resultMenu(attrs)}
+            onClickOutside={() => onClickHide(false)}
         >
             {children}
         </HeadlessTippy>
@@ -54,6 +75,9 @@ Menu.propTypes = {
     items: PropTypes.array,
     hideOnClick: PropTypes.bool,
     onChange: PropTypes.func,
+    isArrow: PropTypes.bool,
+    isImage: PropTypes.bool,
+    isPrice: PropTypes.bool,
 };
 
 export default Menu;

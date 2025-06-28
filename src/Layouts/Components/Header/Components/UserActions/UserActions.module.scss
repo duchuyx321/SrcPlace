@@ -6,6 +6,8 @@
 }
 .wrapper_event {
     position: relative;
+    z-index: 99;
+    padding: 8px;
 }
 .count {
     position: absolute;
@@ -18,8 +20,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    right: -3px;
-    top: 1px;
+    right: 4px;
+    top: 9px;
+    z-index: 1;
 }
 .icon {
     font-size: 4rem;
@@ -28,4 +31,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }

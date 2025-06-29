@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 
 import style from "./UserActions.module.scss";
-import Me from "~/Components/Me";
+
 import Notify from "./Notify";
 import Shopping from "./Shopping";
 
@@ -21,7 +21,6 @@ function UserActions() {
         <div className={cx("wrapper")}>
             <Notify />
             <Shopping />
-            <Me />
         </div>
     );
 }

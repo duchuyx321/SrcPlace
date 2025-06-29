@@ -61,4 +61,12 @@
 }
 
 .right {
+    min-width: 25rem;
+}
+.right_wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
 }

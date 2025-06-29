@@ -7,6 +7,7 @@ import image from "~/Assets/Image";
 import Button from "~/Components/Button";
 import UserActions from "~/Layouts/Components/Header/Components/UserActions";
 import Search from "./Components/Search/Search";
+import Me from "~/Components/Me";
 
 const cx = classNames.bind(style);
 function Header() {
@@ -28,7 +29,10 @@ function Header() {
             <Search />
             <div className={cx("right")}>
                 {isLogin ? (
-                    <UserActions />
+                    <div className={cx("right_wrapper")}>
+                        <UserActions />
+                        <Me />
+                    </div>
                 ) : (
                     <>
                         <Button className={cx("btn_login")} primary>

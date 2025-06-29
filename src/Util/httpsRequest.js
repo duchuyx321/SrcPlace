@@ -2,6 +2,7 @@ import axios from "axios";
 
 const httpRequest = axios.create({
     baseURL: process.env.REACT_APP_URL_SERVER,
+    withCredentials: true,
 });
 
 httpRequest.interceptors.request.use(

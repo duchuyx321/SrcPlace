@@ -6,6 +6,7 @@ import { CiWarning } from "react-icons/ci";
 import style from "./DefaultLayout.module.scss";
 import Header from "~/Layouts/Components/Header";
 import Footer from "~/Layouts/Components/Footer";
+import Sidebar from "~/Layouts/Components/Sidebar";
 
 const cx = classNames.bind(style);
 
@@ -44,7 +45,9 @@ function DefaultLayout({ children }) {
             </header>
             <div className={cx("container")}>
                 <div className={cx("body")}>
-                    <aside className={cx("sidebar")}>Sidebar default</aside>
+                    <aside className={cx("sidebar")}>
+                        <Sidebar />
+                    </aside>
                     <main className={cx("content")}>{children}</main>
                 </div>
                 <footer className={cx("footer")}>

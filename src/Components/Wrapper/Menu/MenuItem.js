@@ -9,24 +9,24 @@ import Button from "~/Components/Button";
 const cx = classNames.bind(style);
 
 function MenuItem({ item, isImage = false, isPrice = false, onChange }) {
+    const link = item.to || (item.slug ? `/${item.slug}` : "");
+    const imageSrc = item.thumbnail?.image_url || item.image_url || "";
+    const title = item.name || item.title || "";
+    const price = item.price;
+
     return (
         <div className={cx("menuItem")}>
-            <Button
-                to={item.to}
-                className={cx("item")}
-                onClick={onChange}
-                large
-            >
+            <Button to={link} className={cx("item")} onClick={onChange} large>
                 <div className={cx("item_wrapper")}>
-                    {isImage && (
+                    {isImage && imageSrc && (
                         <span className={cx("item_thumb")}>
-                            <Image src="" alt="hình ảnh sản phẩm" />
+                            <Image src={imageSrc} alt="hình ảnh sản phẩm" />
                         </span>
                     )}
-                    <h3 className={cx("item_title")}>{item.name}</h3>
-                    {isPrice && (
+                    <h3 className={cx("item_title")}>{title}</h3>
+                    {isPrice && price != null && (
                         <p className={cx("item_price")}>
-                            {formatNumberPrice({ number: 1000000 })}
+                            {formatNumberPrice({ number: price })}
                         </p>
                     )}
                 </div>

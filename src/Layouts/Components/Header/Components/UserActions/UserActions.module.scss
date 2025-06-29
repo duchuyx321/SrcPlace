@@ -1,8 +1,7 @@
 .wrapper {
-    min-width: 25rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 3rem;
 }
 .wrapper_event {
     position: relative;

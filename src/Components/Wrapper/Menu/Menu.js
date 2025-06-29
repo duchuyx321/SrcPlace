@@ -33,7 +33,7 @@ function Menu({
                 tabIndex="-1"
                 {...attrs}
             >
-                {CustomHeader || <Header title={title}>dang timf kiem</Header>}
+                {CustomHeader || <Header title={title} />}
                 {items.length === 0 ? (
                     <p className={cx("not_item")}>Chưa có sản phẩm!</p>
                 ) : (
@@ -55,7 +55,7 @@ function Menu({
     return (
         <HeadlessTippy
             delay={[0, 700]}
-            offset={[12, 8]}
+            offset={[0, 8]}
             visible={hideOnClick}
             placement="bottom-end"
             interactive

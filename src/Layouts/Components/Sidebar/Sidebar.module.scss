@@ -1,0 +1,47 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.wrapper {
+    padding: 2rem 16px;
+}
+.btn_sidebar {
+    width: 100%;
+    min-height: 6rem;
+    padding: 16px;
+    font-size: 2rem;
+    font-weight: 900;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: rgba(126, 196, 207, 0.2);
+    }
+
+    &.isActive {
+        background-color: rgba(237, 240, 96, 0.2);
+    }
+
+    &.isActive:hover {
+        background-color: rgba(237, 240, 96, 0.2);
+    }
+}

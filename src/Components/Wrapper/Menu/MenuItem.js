@@ -13,10 +13,16 @@ function MenuItem({ item, isImage = false, isPrice = false, onChange }) {
     const imageSrc = item.thumbnail?.image_url || item.image_url || "";
     const title = item.name || item.title || "";
     const price = item.price;
-
+    const icon = item.icon || "";
     return (
         <div className={cx("menuItem")}>
-            <Button to={link} className={cx("item")} onClick={onChange} large>
+            <Button
+                to={link}
+                leftIcon={icon}
+                className={cx("item")}
+                onClick={onChange}
+                large
+            >
                 <div className={cx("item_wrapper")}>
                     {isImage && imageSrc && (
                         <span className={cx("item_thumb")}>

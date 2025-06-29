@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import { IoIosSearch } from "react-icons/io";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { TiDeleteOutline } from "react-icons/ti";
+import { FiLoader } from "react-icons/fi";
 
 import style from "./Search.module.scss";
 import Button from "~/Components/Button";
@@ -12,10 +14,12 @@ const cx = classNames.bind(style);
 
 function Search() {
     const [isHide, setIsHide] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [value, setValue] = useState("");
     const [resultSearch, setResultSearch] = useState([]);
     const debounced = useDebounce(value, 700);
 
+    const inputRef = useRef();
     useEffect(() => {
         if (!debounced.trim()) {
             setResultSearch([]);
@@ -23,24 +27,29 @@ function Search() {
         }
         // call api
         const fetchApi = async () => {
+            setLoading(true);
             const result = await PublicService.search({ text: debounced });
             console.log(result);
             if (result.error) {
                 setResultSearch([]);
-                return;
+            } else {
+                setResultSearch(result);
             }
-            setResultSearch(result);
+            setLoading(false);
         };
         fetchApi();
     }, [debounced]);
-    console.log(debounced);
     const handleOnInput = (e) => {
         setValue(e.target.value);
+    };
+    const handleClear = () => {
+        setValue("");
+        inputRef.current?.focus();
     };
     return (
         <div className={cx("wrapper")}>
             <Menu
-                hideOnClick={isHide}
+                hideOnClick={isHide && resultSearch.length > 0}
                 onClickHide={setIsHide}
                 title="Kết Quả Tìm Kiếm"
                 items={resultSearch}
@@ -52,6 +61,8 @@ function Search() {
                 <div className={cx("search")}>
                     <label htmlFor="search">
                         <input
+                            ref={inputRef}
+                            value={value}
                             id="search"
                             type="text"
                             placeholder="Nhập từ khóa tìm kiếm"
@@ -61,6 +72,19 @@ function Search() {
                             autoComplete="off"
                         />
                     </label>
+                    {!!value && !loading && (
+                        <button
+                            className={cx("btn_clear", loading)}
+                            onClick={() => handleClear()}
+                        >
+                            <TiDeleteOutline />
+                        </button>
+                    )}
+                    {loading && (
+                        <span className={cx("loading")}>
+                            <FiLoader />
+                        </span>
+                    )}
                     <Button primary className={cx("btn_search")} small>
                         <IoIosSearch />
                     </Button>

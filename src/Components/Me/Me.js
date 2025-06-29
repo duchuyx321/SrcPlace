@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import classNames from "classnames/bind";
 import { BsWallet2 } from "react-icons/bs";
+import { IoCashOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoIosLogOut } from "react-icons/io";
+import { CiShoppingBasket } from "react-icons/ci";
 import { useMemo, useState } from "react";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 
@@ -15,11 +18,13 @@ const MenuItemUser = [
         key: "wallet",
         to: "/wallet",
         name: "Lịch Sử Nạp Tiền",
+        icon: <IoCashOutline />,
     },
     {
         key: "payment",
         to: "/payment",
         name: "Lịch sử Mua Hàng",
+        icon: <CiShoppingBasket />,
     },
 ];
 const MenuItemAdmin = [{}, {}];
@@ -28,10 +33,12 @@ const MenuItemPublic = [
         key: "setting",
         to: "/setting",
         name: "Cài Đặt",
+        icon: <IoSettingsOutline />,
     },
     {
         key: "logout",
         name: "Đăng Xuất",
+        icon: <IoIosLogOut />,
     },
 ];
 

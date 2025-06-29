@@ -2,7 +2,7 @@
 :root {
     --margin_top: 8rem;
     --height--sidebar: 6rem;
-    --width--sidebar: 15rem;
+    --width--sidebar: 20rem;
 }
 // mobile < 740px
 @media only screen and (max-width: 739px) {
@@ -24,6 +24,7 @@
         min-width: 100%;
         min-height: var(--height--sidebar);
         bottom: 0;
+        // border-top: 1px solid #333;
     }
 }
 // desktop >= 1024px
@@ -35,6 +36,7 @@
         min-width: var(--width--sidebar);
         min-height: 100%;
         left: 0;
+        border-right: 1px solid #eaeaea;
     }
 }
 
@@ -60,9 +62,8 @@
     display: flex;
 }
 .sidebar {
-    border-right: 1px solid #333;
     position: fixed;
-    background-color: #333;
+    background-color: var(--white-color);
 }
 .content {
     flex: 1;

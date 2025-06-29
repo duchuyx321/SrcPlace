@@ -1,6 +1,6 @@
-const CloudinaryService = require('../../services/CloudinaryService');
-const { encrypt, decrypt } = require('../../util/keyUtil');
-const PaymentMethod = require('../Model/PaymentMethods');
+const CloudinaryService = require('../../../services/CloudinaryService');
+const { encrypt, decrypt } = require('../../../util/keyUtil');
+const PaymentMethod = require('../../Model/PaymentMethods');
 
 class PaymentMethodsController {
     // [GET] --/admin/paymentMethods/overview

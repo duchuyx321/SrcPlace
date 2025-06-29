@@ -1,5 +1,5 @@
-const Users = require('../Model/Users');
-const CloudinaryService = require('../../services/CloudinaryService');
+const Users = require('../../Model/Users');
+const CloudinaryService = require('../../../services/CloudinaryService');
 class UserController {
     //[GET] --/admin/user/overview?filter=active&sort=createdAt_asc &limit=10&page=1
     async overview(req, res, next) {

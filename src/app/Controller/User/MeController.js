@@ -1,16 +1,16 @@
-const Orders = require('../Model/Orders');
-const Card = require('../Model/Card');
-const Users = require('../Model/Users');
-const Projects = require('../Model/Projects');
-const Wallet = require('../Model/Wallet');
-const Notification = require('../Model/Notification');
-const NotificationStatus = require('../Model/NotificationStatus');
+const Orders = require('../../Model/Orders');
+const Card = require('../../Model/Card');
+const Users = require('../../Model/Users');
+const Projects = require('../../Model/Projects');
+const Wallet = require('../../Model/Wallet');
+const Notification = require('../../Model/Notification');
+const NotificationStatus = require('../../Model/NotificationStatus');
 
-const CloudinaryService = require('../../services/CloudinaryService');
-const MailerServices = require('../../services/MailerServices');
-const VerifyCodesServices = require('../../services/VerifyCodesServices');
-const { comparePassword, hashPassword } = require('../../util/passwordUtil');
-const { validateField } = require('../../util/checkValid');
+const CloudinaryService = require('../../../services/CloudinaryService');
+const MailerServices = require('../../../services/MailerServices');
+const VerifyCodesServices = require('../../../services/VerifyCodesServices');
+const { comparePassword, hashPassword } = require('../../../util/passwordUtil');
+const { validateField } = require('../../../util/checkValid');
 
 class UserController {
     // [GET] --/user/me

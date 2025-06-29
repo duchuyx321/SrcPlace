@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const PaymentMethodsController = require('../../app/Controller/PaymentMethodsController');
+const PaymentMethodsController = require('../../app/Controller/Admin/PaymentMethodsController');
 const {
     uploadCloudinary,
 } = require('../../app/Middleware/CloudinaryMiddleware');

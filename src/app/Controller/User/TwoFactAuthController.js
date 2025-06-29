@@ -1,5 +1,5 @@
-const TwoFactorAuthService = require('../../services/TwoFactorAuthService');
-const TwoFactorAuth = require('../Model/TwoFactorAuth');
+const TwoFactorAuthService = require('../../../services/TwoFactorAuthService');
+const TwoFactorAuth = require('../../Model/TwoFactorAuth');
 
 class TwoFactAuthController {
     // [GET] --/user/2fa/qrcode

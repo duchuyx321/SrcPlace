@@ -1,4 +1,4 @@
-const Categories = require('../Model/Categories');
+const Categories = require('../../Model/Categories');
 class CategoriesController {
     // [GET] --/admin/categories/overview?filter=active&sort
     async overview(req, res, next) {

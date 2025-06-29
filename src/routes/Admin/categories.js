@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const CategoriesController = require('../../app/Controller/CategoriesController');
+const CategoriesController = require('../../app/Controller/Admin/CategoriesController');
 
 // [GET]
 router.get('/overview', CategoriesController.overview);

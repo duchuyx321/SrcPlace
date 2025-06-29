@@ -1,7 +1,7 @@
-const Projects = require('../Model/Projects');
-const CloudinaryService = require('../../services/CloudinaryService');
-const DriverService = require('../../services/DriverService');
-const SocketService = require('../../services/SocketService');
+const Projects = require('../../Model/Projects');
+const CloudinaryService = require('../../../services/CloudinaryService');
+const DriverService = require('../../../services/DriverService');
+const SocketService = require('../../../services/SocketService');
 class ProjectsController {
     // [GET] --/admin/projects/overview?filter=active&sort&limit=10&page=1
     async overview(req, res, next) {

@@ -82,7 +82,9 @@ class PublicController {
             const reg = new RegExp(text, 'i');
             const projects = await Projects.find({
                 title: { $regex: reg },
-            }).limit(limit);
+            })
+                .select('title slug price thumbnail')
+                .limit(limit);
             return res.status(200).json({ data: projects });
         } catch (error) {
             console.log(error.message);

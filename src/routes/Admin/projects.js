@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const ProjectsController = require('../../app/Controller/ProjectsController');
+const ProjectsController = require('../../app/Controller/Admin/ProjectsController');
 const CloudinaryMiddleware = require('../../app/Middleware/CloudinaryMiddleware');
 
 // [GET]

@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const DashboardController = require('../../app/Controller/DashboardController');
+const DashboardController = require('../../app/Controller/Admin/DashboardController');
 
 // [GET]
 router.get('/order', DashboardController.getOrderStatus);

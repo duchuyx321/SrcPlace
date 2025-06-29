@@ -1,4 +1,4 @@
-const Payment = require('../Model/Payments');
+const Payment = require('../../Model/Payments');
 
 class PaymentController {
     // [GET] --/admin/payments/overview

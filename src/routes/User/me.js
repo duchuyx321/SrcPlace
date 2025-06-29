@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const MeController = require('../../app/Controller/MeController');
+const MeController = require('../../app/Controller/User/MeController');
 const {
     uploadCloudinary,
 } = require('../../app/Middleware/CloudinaryMiddleware');

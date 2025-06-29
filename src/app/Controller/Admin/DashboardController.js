@@ -1,6 +1,6 @@
-const Orders = require('../Model/Orders');
+const Orders = require('../../Model/Orders');
 
-const { getStartEndDate } = require('../../util/dayUtil');
+const { getStartEndDate } = require('../../../util/dayUtil');
 
 class DashboardController {
     // [GET] --/admin/dashboard/order?year=2025

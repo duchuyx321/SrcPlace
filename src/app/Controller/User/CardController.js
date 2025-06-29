@@ -1,7 +1,7 @@
 const ms = require('ms');
-const Card = require('../Model/Card');
-const Projects = require('../Model/Projects');
-const SocketService = require('../../services/SocketService');
+const Card = require('../../Model/Card');
+const Projects = require('../../Model/Projects');
+const SocketService = require('../../../services/SocketService');
 
 class CardController {
     // [GET] --/user/card

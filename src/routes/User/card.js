@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const CardController = require('../../app/Controller/CardController');
+const CardController = require('../../app/Controller/User/CardController');
 
 // [GET]
 router.get('/', CardController.getCards);

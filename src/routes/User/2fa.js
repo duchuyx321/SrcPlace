@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const VerifyCodesMiddleware = require('../../app/Middleware/VerifyCodeMiddleware');
-const TwoFactAuthController = require('../../app/Controller/TwoFactAuthController');
+const TwoFactAuthController = require('../../app/Controller/User/TwoFactAuthController');
 
 // [GET]
 router.get('/qrcode', TwoFactAuthController.getQrcode);

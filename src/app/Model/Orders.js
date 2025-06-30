@@ -7,7 +7,7 @@ const OrdersSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true },
         payment_ID: { type: Schema.Types.ObjectId, required: true },
-        project_ID: { type: Schema.Types.ObjectId, required: true },
+        project_IDs: [{ type: Schema.Types.ObjectId, required: true }],
         paymentMethod_ID: { type: Schema.Types.ObjectId, required: true },
         price: { type: Number, required: true },
         status: {

@@ -1,6 +1,6 @@
 const CloudinaryService = require('../../../services/CloudinaryService');
 const { encrypt, decrypt } = require('../../../util/keyUtil');
-const PaymentMethod = require('../../Model/PaymentMethods');
+const PaymentMethods = require('../../Model/PaymentMethods');
 
 class PaymentMethodsController {
     // [GET] --/admin/paymentMethods/overview
@@ -8,8 +8,8 @@ class PaymentMethodsController {
         try {
             const [paymentMethods, countPaymentMethodDelete] =
                 await Promise.all([
-                    PaymentMethod.find().select('-config'),
-                    PaymentMethod.countDocumentsDeleted(),
+                    PaymentMethods.find().select('-config'),
+                    PaymentMethods.countDocumentsDeleted(),
                 ]);
             return res.status(200).json({
                 data: {
@@ -56,7 +56,7 @@ class PaymentMethodsController {
                 partnerCode,
                 'partnerCode',
             );
-            const newPaymentMethod = new PaymentMethod({
+            const newPaymentMethod = new PaymentMethods({
                 name,
                 code,
                 image_url,
@@ -99,11 +99,46 @@ class PaymentMethodsController {
                     .status(403)
                     .json({ error: 'data upload not enough!' });
             }
-            const edit = await PaymentMethod.updateOne(
+            if (
+                attributeChanges.apiKey ||
+                attributeChanges.partnerCode ||
+                attributeChanges.callbackUrl
+            ) {
+                const configUpdate = {};
+
+                if (attributeChanges.apiKey) {
+                    const encryptApiKey = await encrypt(
+                        attributeChanges.apiKey,
+                        'apiKey',
+                    );
+                    configUpdate['config.apiKey'] = encryptApiKey;
+                    delete attributeChanges.apiKey;
+                }
+                if (attributeChanges.partnerCode) {
+                    const encryptPartnerCode = await encrypt(
+                        attributeChanges.partnerCode,
+                        'partnerCode',
+                    );
+                    configUpdate['config.partnerCode'] = encryptPartnerCode;
+                    delete attributeChanges.partnerCode;
+                }
+                if (attributeChanges.callbackUrl) {
+                    configUpdate['config.callbackUrl'] =
+                        attributeChanges.callbackUrl;
+                    delete attributeChanges.callbackUrl;
+                }
+
+                // Merge các thay đổi lồng vào attributeChanges
+                attributeChanges = {
+                    ...attributeChanges,
+                    ...configUpdate,
+                };
+            }
+            const edit = await PaymentMethods.updateOne(
                 {
                     _id: paymentMethod_ID,
                 },
-                attributeChanges,
+                { $set: attributeChanges },
             );
             if (edit.modifiedCount === 0) {
                 if (file) {
@@ -134,7 +169,7 @@ class PaymentMethodsController {
             ) {
                 return res.status(403).json({ error: 'data is not exits!' });
             }
-            await PaymentMethod.restore({ _id: { $in: paymentMethod_IDs } });
+            await PaymentMethods.restore({ _id: { $in: paymentMethod_IDs } });
             return res
                 .status(200)
                 .json({ data: { message: 'restore is successful' } });
@@ -153,7 +188,7 @@ class PaymentMethodsController {
             ) {
                 return res.status(403).json({ error: 'data is not exits!' });
             }
-            await PaymentMethod.delete({ _id: { $in: paymentMethod_IDs } });
+            await PaymentMethods.delete({ _id: { $in: paymentMethod_IDs } });
             return res
                 .status(200)
                 .json({ data: { message: 'delete is successful' } });
@@ -172,7 +207,9 @@ class PaymentMethodsController {
             ) {
                 return res.status(403).json({ error: 'data is not exits!' });
             }
-            await PaymentMethod.deleteMany({ _id: { $in: paymentMethod_IDs } });
+            await PaymentMethods.deleteMany({
+                _id: { $in: paymentMethod_IDs },
+            });
             return res
                 .status(200)
                 .json({ data: { message: 'destroy is successful' } });

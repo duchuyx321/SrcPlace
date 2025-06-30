@@ -1,25 +1,22 @@
+const axios = require('axios');
 class PaymentService {
-    async createPayment({
+    async createPaymentMoMo({
         accessKey = '',
         secretKey = '',
         type = '',
         callback = '',
         amount = 0,
-        paymentCode = '',
+        orderInfo = '',
     }) {
         //parameters
-        const accessKey = accessKey;
-        const secretKey = secretKey;
-        const orderInfo = `pay with {type}`;
-        const partnerCode = type.toLowerCase();
-        const redirectUrl = `${process.env.URL_SERVER_NGROK}payment`; // chỉnh sửa cho phù hợp với fe
-        const ipnUrl = callback; // URL_SERVER
+        const partnerCode = type;
+        const redirectUrl =
+            'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
+        const ipnUrl = callback;
         const requestType = 'payWithMethod';
-        const amount = amount;
         const orderId = partnerCode + new Date().getTime();
         const requestId = orderId;
         const extraData = '';
-        const paymentCode = paymentCode;
         const orderGroupId = '';
         const autoCapture = true;
         const lang = 'vi';

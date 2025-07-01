@@ -349,7 +349,7 @@ class AuthController {
             // tạo jwt
             const profile = { user_ID, device_ID, role };
             const AccessToken = await newAccessToken(profile);
-            const RefreshToken = await newRefreshToken(profile);
+            const RefreshToken = await newRefreshToken({ profile });
             await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
             const ip = req.ip;
             const userAgent = req.headers['user-agent'];
@@ -360,7 +360,6 @@ class AuthController {
                 userAgent,
                 user_ID,
                 token: RefreshToken?.split(' ')[1],
-                expiresAt,
             });
             return res.status(200).json({ data: { meta: { AccessToken } } });
         } catch (error) {

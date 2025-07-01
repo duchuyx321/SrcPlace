@@ -1,15 +1,22 @@
 const axios = require('axios');
 class PaymentService {
+    gatewayMap(code) {
+        const map = {
+            MOMO: this.createPaymentMoMo,
+            // ZALOPAY: this.createPaymentZalopay,
+            // VNPAY: this.createPaymentVnpay,
+        };
+        return map[code];
+    }
     async createPaymentMoMo({
         accessKey = '',
         secretKey = '',
-        type = '',
         callback = '',
         amount = 0,
         orderInfo = '',
     }) {
         //parameters
-        const partnerCode = type;
+        const partnerCode = 'MOMO';
         const redirectUrl =
             'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
         const ipnUrl = callback;
@@ -54,8 +61,8 @@ class PaymentService {
         //json object send to MoMo endpoint
         const requestBody = JSON.stringify({
             partnerCode: partnerCode,
-            partnerName: 'Test',
-            storeId: 'MomoTestStore',
+            partnerName: 'Test', // tên của mình
+            storeId: 'MomoTestStore', // tên id của mình
             requestId: requestId,
             amount: amount,
             orderId: orderId,
@@ -72,7 +79,7 @@ class PaymentService {
         //Create the HTTPS objects
         const option = {
             method: 'POST',
-            url: 'https:/test-payment.momo.vn/v2/gateway/api/create',
+            url: 'https://test-payment.momo.vn/v2/gateway/api/create',
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(requestBody),

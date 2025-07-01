@@ -74,6 +74,10 @@ class JwtMiddleware {
                     const ip = req.ip;
                     const userAgent = req.headers['user-agent'];
                     const now = new Date();
+                    console.log('Decoded JWT:', data);
+                    console.log('IP:', req.ip);
+                    console.log('User-Agent:', req.headers['user-agent']);
+                    console.log('Token:', refreshToken);
                     const checkLoginSession = await TokenSession.findOne({
                         user_ID,
                         device_ID,

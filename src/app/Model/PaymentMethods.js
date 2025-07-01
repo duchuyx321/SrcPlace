@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const PaymentMethodsSchema = new Schema(
     {
         name: { type: String, required: true },
-        code: { type: String, required: true },
+        code: { type: String, required: true, lowercase: true, unique: true },
         status: {
             type: String,
             enum: ['active', 'inactive'],

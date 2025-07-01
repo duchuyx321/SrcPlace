@@ -1,5 +1,6 @@
 const Vouchers = require('../app/Model/Voucher');
 const VoucherUsedBy = require('../app/Model/VoucherUsedBy');
+const Payments = require('../app/Model/Payments');
 const Users = require('../app/Model/Users');
 const dayjs = require('dayjs');
 class VoucherServices {
@@ -7,7 +8,6 @@ class VoucherServices {
         user_ID,
         vouchers = [],
         products = [],
-        countPayment = 0,
         amount = 0,
     }) {
         try {
@@ -83,8 +83,13 @@ class VoucherServices {
                     }
                 }
                 // kiểm tra đơn hàng đầu tiên
-                if (voucher.proviso?.firstTimeUserOnly && countPayment !== 0) {
-                    throw new Error('user is not used');
+                if (voucher.proviso?.firstTimeUserOnly) {
+                    const countPayment = await Payments.countDocuments({
+                        user_ID,
+                    });
+                    if (countPayment > 0) {
+                        throw new Error('user is not used');
+                    }
                 }
                 // kiểm tra người dùng mới trong vòng 48h trở lại
                 if (voucher.proviso?.newUserOnly) {

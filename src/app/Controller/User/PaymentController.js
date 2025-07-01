@@ -1,7 +1,6 @@
 const Projects = require('../../Model/Projects');
 const PaymentMethods = require('../../Model/PaymentMethods');
-const Vouchers = require('../../Model/Voucher');
-const VoucherUsedBy = require('../../Model/VoucherUsedBy');
+
 const { decrypt } = require('../../../util/keyUtil');
 const PaymentService = require('../../../services/PaymentService');
 
@@ -34,7 +33,7 @@ class PaymentController {
             // total products
             const projects = await Projects.find({
                 _id: { $in: products },
-            }).select('price');
+            }).select('price category_ID');
             let amount = projects.reduce(
                 (total, item) => (total += item.price),
                 0,

@@ -12,7 +12,6 @@ const PaymentMethodsSchema = new Schema(
             enum: ['active', 'inactive'],
             default: 'active',
         },
-        type: { type: String, enum: ['e-wallet', 'bank'], default: 'e-wallet' },
         config: {
             apiKey: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
             callbackUrl: { type: String, required: true },

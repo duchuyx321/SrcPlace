@@ -6,7 +6,13 @@ const Schema = mongoose.Schema;
 const PaymentsSchema = new Schema(
     {
         user_ID: { type: Schema.Types.ObjectId, required: true },
-        paymentMethod_ID: { type: Schema.Types.ObjectId, required: true },
+        paymentable_type: {
+            type: String,
+            enum: ['e-wallet', 'wallet'],
+            require: true,
+        },
+
+        paymentable_ID: { type: Schema.Types.ObjectId, required: true },
         status: {
             type: String,
             required: true,

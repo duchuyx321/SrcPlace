@@ -4,6 +4,7 @@ const PaymentMethods = require('../../Model/PaymentMethods');
 const { decrypt } = require('../../../util/keyUtil');
 const PaymentService = require('../../../services/PaymentService');
 const VoucherServices = require('../../../services/VoucherServices');
+const OrderServices = require('../../../services/OrderServices');
 
 require('dotenv').config();
 class PaymentController {
@@ -30,6 +31,13 @@ class PaymentController {
                 amount -= discount;
                 vouchers = applyVoucher;
             }
+            // create order
+            const order = await OrderServices.createOrder({
+                user_ID,
+                project_IDs: products,
+                price: amount,
+                paymentMethod_ID: '',
+            });
             // phương thức thanh toán
             let resultPayment;
             if (paymentMethod_type === 'wallet') {
@@ -59,7 +67,7 @@ class PaymentController {
                     accessKey,
                     secretKey,
                     callback:
-                        'https://c664-2405-4800-5f29-fc00-5831-c7ee-2d17-6fc9.ngrok-free.app/api/payment/callback', //callbackUrl
+                        'https://aa49-2405-4800-5f29-fc00-a119-ec58-7a54-4350.ngrok-free.app/api/payment/callback', //callbackUrl
                     amount,
                     orderInfo,
                 });

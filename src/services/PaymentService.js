@@ -1,5 +1,50 @@
 const axios = require('axios');
+const crypto = require('crypto');
 class PaymentService {
+    createSignature({
+        accessKey = '',
+        secretKey = '',
+        amount = '',
+        extraData = '',
+        ipnUrl = '',
+        orderId = '',
+        orderInfo = '',
+        partnerCode = '',
+        redirectUrl = '',
+        requestId = '',
+        requestType = '',
+    } = {}) {
+        //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
+        const rawSignature =
+            'accessKey=' +
+            accessKey +
+            '&amount=' +
+            amount +
+            '&extraData=' +
+            extraData +
+            '&ipnUrl=' +
+            ipnUrl +
+            '&orderId=' +
+            orderId +
+            '&orderInfo=' +
+            orderInfo +
+            '&partnerCode=' +
+            partnerCode +
+            '&redirectUrl=' +
+            redirectUrl +
+            '&requestId=' +
+            requestId +
+            '&requestType=' +
+            requestType;
+        //signature
+
+        const signature = crypto
+            .createHmac('sha256', secretKey)
+            .update(rawSignature)
+            .digest('hex');
+
+        return signature;
+    }
     gatewayMap(code) {
         const map = {
             MOMO: this.createPaymentMoMo,
@@ -29,35 +74,19 @@ class PaymentService {
         const lang = 'vi';
 
         //before sign HMAC SHA256 with format
-        //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-        const rawSignature =
-            'accessKey=' +
-            accessKey +
-            '&amount=' +
-            amount +
-            '&extraData=' +
-            extraData +
-            '&ipnUrl=' +
-            ipnUrl +
-            '&orderId=' +
-            orderId +
-            '&orderInfo=' +
-            orderInfo +
-            '&partnerCode=' +
-            partnerCode +
-            '&redirectUrl=' +
-            redirectUrl +
-            '&requestId=' +
-            requestId +
-            '&requestType=' +
-            requestType;
-        //signature
-        const crypto = require('crypto');
-        const signature = crypto
-            .createHmac('sha256', secretKey)
-            .update(rawSignature)
-            .digest('hex');
-
+        const signature = this.createSignature({
+            accessKey,
+            secretKey,
+            amount,
+            extraData,
+            ipnUrl,
+            orderId,
+            orderInfo,
+            partnerCode,
+            redirectUrl,
+            requestId,
+            requestType,
+        });
         //json object send to MoMo endpoint
         const requestBody = JSON.stringify({
             partnerCode: partnerCode,
@@ -99,6 +128,21 @@ class PaymentService {
                 status: 500,
                 message: 'server error',
             };
+        }
+    }
+    async createPaymentDB({
+        user_ID = '',
+        paymentable_type = '',
+        paymentable_ID = '',
+        status = 'pending',
+        transactionCode = '',
+        price = 0,
+        paidAt = '',
+    } = {}) {
+        try {
+        } catch (error) {
+            console.log(error);
+            throw new Error(error.message);
         }
     }
 }

@@ -11,7 +11,7 @@ class PaymentController {
     async createPayment(req, res, next) {
         try {
             const { user_ID } = req.user;
-            const { paymentMethod_type, products } = req.body;
+            const { paymentMethod_ID, products } = req.body;
             let vouchers = req.body.vouchers;
             // total products
             const projects = await Projects.find({
@@ -31,47 +31,46 @@ class PaymentController {
                 amount -= discount;
                 vouchers = applyVoucher;
             }
+            // lấy phương thức thanh toán
+            const paymentMethod = await PaymentMethods.findOne({
+                _id: paymentMethod_ID,
+                // status: 'active',
+            }).select('config code');
             // create order
             const order = await OrderServices.createOrder({
                 user_ID,
                 project_IDs: products,
                 price: amount,
-                paymentMethod_ID: '',
+                orderable_type: 'e-wallet',
+                orderable_ID: paymentMethod._id,
             });
-            // phương thức thanh toán
-            let resultPayment;
-            if (paymentMethod_type === 'wallet') {
-                //  gọi đến phương thức chỉnh sửa wallet
-            } else {
-                const paymentMethod = await PaymentMethods.findOne({
-                    _id: paymentMethod_type, // bên fe sẽ gửi lên là _id or wallet do bên be trả dữ liệu về danh sách
-                    // status: 'active',
-                }).select('config code');
-                if (!paymentMethod) {
-                    return res
-                        .status(403)
-                        .json({ error: 'Payment method not working!' });
-                }
-                const { apiKey, partnerCode, callbackUrl } =
-                    paymentMethod.config;
-                const accessKey = await decrypt(apiKey, 'apiKey');
-                const secretKey = await decrypt(partnerCode, 'partnerCode');
-                const orderInfo = `${paymentMethod.code}_${products.join(',')}_${new Date()}`;
-                // khởi tạo thanh toán bằng bên thứ 3
-                const paymentFn = PaymentService.gatewayMap(paymentMethod.code);
-                if (!paymentFn)
-                    return res
-                        .status(400)
-                        .json({ error: 'Unsupported gateway' });
-                resultPayment = await paymentFn({
-                    accessKey,
-                    secretKey,
-                    callback:
-                        'https://aa49-2405-4800-5f29-fc00-a119-ec58-7a54-4350.ngrok-free.app/api/payment/callback', //callbackUrl
-                    amount,
-                    orderInfo,
-                });
+            if (!paymentMethod) {
+                return res
+                    .status(403)
+                    .json({ error: 'Payment method not working!' });
             }
+            const { accessKey, secretKey, partnerCode, callbackUrl } =
+                paymentMethod.config;
+            const decryptAccessKey = await decrypt(accessKey, 'accessKey');
+            const decryptSecretKey = await decrypt(secretKey, 'secretKey');
+            const decryptPartnerCode = await decrypt(
+                partnerCode,
+                'partnerCode',
+            );
+            const orderInfo = `${paymentMethod.code}_${order.order_ID}_${new Date()}`;
+            // khởi tạo thanh toán bằng bên thứ 3
+            const paymentFn = PaymentService.gatewayMap(paymentMethod.code);
+            if (!paymentFn)
+                return res.status(400).json({ error: 'Unsupported gateway' });
+            const resultPayment = await paymentFn({
+                accessKey: decryptAccessKey,
+                secretKey: decryptSecretKey,
+                partnerCode: decryptPartnerCode,
+                callback:
+                    'https://e106-2405-4800-5f29-fc00-1018-ed70-1129-cf4c.ngrok-free.app/api/payment/callback', //callbackUrl
+                amount,
+                orderInfo,
+            });
             return res.status(200).json({
                 data: {
                     message: 'payment successful',

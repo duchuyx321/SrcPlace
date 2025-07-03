@@ -2,7 +2,8 @@ const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
 const listType = {
-    apiKey: process.env.KEY_PAYMENT_METHOD_API_KEY,
+    accessKey: process.env.KEY_PAYMENT_METHOD_ACCESSKEY,
+    secretKey: process.env.KET_PAYMENT_METHOD_SECRETKEY,
     partnerCode: process.env.KEY_PAYMENT_METHOD_PARTNER_CODE,
 };
 const encrypt = async (data, type) => {

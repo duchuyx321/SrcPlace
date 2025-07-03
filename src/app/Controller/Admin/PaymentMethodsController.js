@@ -29,8 +29,8 @@ class PaymentMethodsController {
                 name,
                 code,
                 status,
-                type,
-                apiKey,
+                accessKey,
+                secretKey,
                 partnerCode,
                 callbackUrl,
             } = req.body;
@@ -39,8 +39,8 @@ class PaymentMethodsController {
                 !name ||
                 !code ||
                 !status ||
-                !type ||
-                !apiKey ||
+                !accessKey ||
+                !secretKey ||
                 !partnerCode ||
                 !callbackUrl
             ) {
@@ -51,21 +51,22 @@ class PaymentMethodsController {
                     .status(403)
                     .json({ error: 'data upload not enough!' });
             }
-            const encryptApiKey = await encrypt(apiKey, 'apiKey');
+            const encryptAccessKey = await encrypt(accessKey, 'accessKey');
+            const encryptSecretKey = await encrypt(secretKey, 'secretKey');
             const encryptPartnerCode = await encrypt(
                 partnerCode,
                 'partnerCode',
             );
             const newPaymentMethod = new PaymentMethods({
                 name,
-                code,
+                code: code.toLowerCase(),
                 image_url,
                 status,
-                type,
                 config: {
-                    apiKey: encryptApiKey,
-                    callbackUrl,
+                    accessKey: encryptAccessKey,
+                    secretKey: encryptSecretKey,
                     partnerCode: encryptPartnerCode,
+                    callbackUrl,
                 },
             });
             await newPaymentMethod.save();
@@ -100,19 +101,28 @@ class PaymentMethodsController {
                     .json({ error: 'data upload not enough!' });
             }
             if (
-                attributeChanges.apiKey ||
+                attributeChanges.accessKey ||
+                attributeChanges.secretKey ||
                 attributeChanges.partnerCode ||
                 attributeChanges.callbackUrl
             ) {
                 const configUpdate = {};
 
-                if (attributeChanges.apiKey) {
-                    const encryptApiKey = await encrypt(
-                        attributeChanges.apiKey,
-                        'apiKey',
+                if (attributeChanges.accessKey) {
+                    const encryptAccessKey = await encrypt(
+                        attributeChanges.accessKey,
+                        'accessKey',
                     );
-                    configUpdate['config.apiKey'] = encryptApiKey;
-                    delete attributeChanges.apiKey;
+                    configUpdate['config.accessKey'] = encryptAccessKey;
+                    delete attributeChanges.accessKey;
+                }
+                if (attributeChanges.secretKey) {
+                    const encryptSecretKey = await encrypt(
+                        attributeChanges.secretKey,
+                        'secretKey',
+                    );
+                    configUpdate['config.secretKey'] = encryptSecretKey;
+                    delete attributeChanges.secretKey;
                 }
                 if (attributeChanges.partnerCode) {
                     const encryptPartnerCode = await encrypt(

@@ -1,5 +1,6 @@
 const axios = require('axios');
 const crypto = require('crypto');
+const Payments = require('../app/Model/Payments');
 class PaymentService {
     createSignature({
         accessKey = '',
@@ -47,7 +48,7 @@ class PaymentService {
     }
     gatewayMap(code) {
         const map = {
-            MOMO: this.createPaymentMoMo,
+            MOMO: this.createPaymentMoMo.bind(this),
             // ZALOPAY: this.createPaymentZalopay,
             // VNPAY: this.createPaymentVnpay,
         };
@@ -59,9 +60,17 @@ class PaymentService {
         callback = '',
         amount = 0,
         orderInfo = '',
+        partnerCode = 'MOMO',
     }) {
+        console.log({
+            accessKey,
+            secretKey,
+            callback,
+            amount,
+            orderInfo,
+            partnerCode,
+        });
         //parameters
-        const partnerCode = 'MOMO';
         const redirectUrl =
             'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
         const ipnUrl = callback;
@@ -140,6 +149,17 @@ class PaymentService {
         paidAt = '',
     } = {}) {
         try {
+            const payment = new Payments({
+                user_ID,
+                paymentable_type,
+                paymentable_ID,
+                status,
+                transactionCode,
+                price,
+                paidAt,
+            });
+            await payment.save();
+            return payment;
         } catch (error) {
             console.log(error);
             throw new Error(error.message);

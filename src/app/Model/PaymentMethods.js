@@ -13,8 +13,9 @@ const PaymentMethodsSchema = new Schema(
             default: 'active',
         },
         config: {
-            apiKey: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
+            accessKey: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
             callbackUrl: { type: String, required: true },
+            secretKey: { type: String, require: true },
             partnerCode: { type: String, required: true }, // cần mã hóa trước khi đưa vào code
         },
         logo: {

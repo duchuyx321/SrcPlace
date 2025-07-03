@@ -38,7 +38,6 @@ class PaymentService {
             '&requestType=' +
             requestType;
         //signature
-
         const signature = crypto
             .createHmac('sha256', secretKey)
             .update(rawSignature)
@@ -62,14 +61,6 @@ class PaymentService {
         orderInfo = '',
         partnerCode = 'MOMO',
     }) {
-        console.log({
-            accessKey,
-            secretKey,
-            callback,
-            amount,
-            orderInfo,
-            partnerCode,
-        });
         //parameters
         const redirectUrl =
             'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
@@ -117,7 +108,7 @@ class PaymentService {
         //Create the HTTPS objects
         const option = {
             method: 'POST',
-            url: 'https://test-payment.momo.vn/v2/gateway/api/create',
+            url: 'https:/test-payment.momo.vn/v2/gateway/api/create',
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(requestBody),
@@ -133,10 +124,7 @@ class PaymentService {
             };
         } catch (error) {
             console.log(error);
-            return {
-                status: 500,
-                message: 'server error',
-            };
+            throw new Error(error.message);
         }
     }
     async createPaymentDB({

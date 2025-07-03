@@ -57,7 +57,8 @@ class PaymentController {
                 partnerCode,
                 'partnerCode',
             );
-            const orderInfo = `${paymentMethod.code}_${order.order_ID}_${new Date()}`;
+            const timestamp = Date.now();
+            const orderInfo = `${paymentMethod.code}_${order.order_ID}_${timestamp}`;
             // khởi tạo thanh toán bằng bên thứ 3
             const paymentFn = PaymentService.gatewayMap(paymentMethod.code);
             if (!paymentFn)
@@ -66,10 +67,10 @@ class PaymentController {
                 accessKey: decryptAccessKey,
                 secretKey: decryptSecretKey,
                 partnerCode: decryptPartnerCode,
-                callback:
-                    'https://e106-2405-4800-5f29-fc00-1018-ed70-1129-cf4c.ngrok-free.app/api/payment/callback', //callbackUrl
                 amount,
                 orderInfo,
+                callback:
+                    'https://99a8-2405-4800-5f29-fc00-d409-8f3-3be0-d830.ngrok-free.app/api/payment/callback', // callbackUrl
             });
             return res.status(200).json({
                 data: {

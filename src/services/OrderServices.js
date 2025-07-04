@@ -78,5 +78,15 @@ class OrderService {
             throw new Error(error.message);
         }
     }
+
+    async destroyOrder({ order_IDs = {} }) {
+        try {
+            await Orders.deleteMany({ _id: { $in: order_IDs } });
+            return { status: 200, message: 'delete is successful!' };
+        } catch (error) {
+            console.log(error);
+            throw new Error(error.message);
+        }
+    }
 }
 module.exports = new OrderService();

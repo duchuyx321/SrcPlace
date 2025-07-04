@@ -1,4 +1,5 @@
 const CryptoJS = require('crypto-js');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const listType = {
@@ -12,8 +13,43 @@ const encrypt = async (data, type) => {
 };
 const decrypt = async (data, type) => {
     const dec = await CryptoJS.AES.decrypt(data, listType[type]);
-    const result = await dec.toString(CryptoJS.enc.Utf8);
+    const result = dec.toString(CryptoJS.enc.Utf8);
     return result;
 };
+const newSignatureCallback = ({
+    accessKey = '',
+    secretKey = '',
+    amount = '',
+    extraData = '',
+    message = '',
+    orderId = '',
+    orderInfo = '',
+    orderType = '',
+    partnerCode = '',
+    payType = '',
+    requestId = '',
+    responseTime = '',
+    resultCode = '',
+    transId = '',
+} = {}) => {
+    const rawSignature =
+        `accessKey=${accessKey}` +
+        `&amount=${amount}` +
+        `&extraData=${extraData}` +
+        `&message=${message}` +
+        `&orderId=${orderId}` +
+        `&orderInfo=${orderInfo}` +
+        `&orderType=${orderType}` +
+        `&partnerCode=${partnerCode}` +
+        `&payType=${payType}` +
+        `&requestId=${requestId}` +
+        `&responseTime=${responseTime}` +
+        `&resultCode=${resultCode}` +
+        `&transId=${transId}`;
 
-module.exports = { encrypt, decrypt };
+    return crypto
+        .createHmac('sha256', secretKey)
+        .update(rawSignature)
+        .digest('hex');
+};
+module.exports = { encrypt, decrypt, newSignatureCallback };

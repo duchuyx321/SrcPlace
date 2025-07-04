@@ -11,7 +11,7 @@ class PaymentService {
         orderId = '',
         orderInfo = '',
         partnerCode = '',
-        redirectUrl = '',
+        redirectUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b',
         requestId = '',
         requestType = '',
     } = {}) {
@@ -37,6 +37,7 @@ class PaymentService {
             requestId +
             '&requestType=' +
             requestType;
+
         //signature
         const signature = crypto
             .createHmac('sha256', secretKey)
@@ -90,8 +91,8 @@ class PaymentService {
         //json object send to MoMo endpoint
         const requestBody = JSON.stringify({
             partnerCode: partnerCode,
-            partnerName: 'Test', // tên của mình
-            storeId: 'MomoTestStore', // tên id của mình
+            partnerName: 'Test',
+            storeId: 'MomoTestStore',
             requestId: requestId,
             amount: amount,
             orderId: orderId,
@@ -106,18 +107,17 @@ class PaymentService {
             signature: signature,
         });
         //Create the HTTPS objects
-        const option = {
+        const options = {
             method: 'POST',
-            url: 'https:/test-payment.momo.vn/v2/gateway/api/create',
+            url: 'https://test-payment.momo.vn/v2/gateway/api/create',
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': Buffer.byteLength(requestBody),
             },
             data: requestBody,
         };
-        let result;
         try {
-            result = await axios(option);
+            const result = await axios(options);
             return {
                 status: 200,
                 message: result.data,

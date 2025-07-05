@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
-import { AiOutlineHome, AiFillTags } from "react-icons/ai";
+import { AiFillHome, AiFillTags } from "react-icons/ai";
+
 import { BsCaretLeftFill } from "react-icons/bs";
 import { LuAlignJustify } from "react-icons/lu";
 import { NavLink } from "react-router";
@@ -12,7 +13,7 @@ const MenuSidebars = [
         key: "Home",
         to: "/",
         name: "Trang Chủ",
-        icon: <AiOutlineHome />,
+        icon: <AiFillHome />,
     },
     {
         key: "category",

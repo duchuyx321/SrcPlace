@@ -10,7 +10,7 @@ const cx = classNames.bind(style);
 function Notify({ count = 0 }) {
     const [countNotify, setCountNotify] = useState(count);
     const [isHidden, setIsHidden] = useState(false);
-    const [resultNotify, setResultNotify] = useState([1, 2, 3, 4, 5]);
+    const [resultNotify, setResultNotify] = useState([]);
 
     useEffect(() => {
         console.log("thêm count");

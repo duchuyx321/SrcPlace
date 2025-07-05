@@ -22,33 +22,141 @@
         display: flex;
         flex-direction: column;
         padding: 2rem 16px;
+        gap: 16px;
     }
 }
 
 .btn_sidebar {
     width: 100%;
-    min-height: 6rem;
-    padding: 16px;
+    height: 6rem;
+    padding-left: 16px;
     border-radius: 8px;
+    position: relative;
     display: flex;
     align-items: center;
     gap: 1.6rem;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
+
     & > span {
+        color: var(--black-color);
         font-size: 2.4rem;
+        z-index: 1;
     }
+
     & > h3 {
         font-size: 1.8rem;
         font-weight: 600;
+        z-index: 1;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        background: var(--white-color);
+        border-radius: 8px;
+        z-index: 0;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 130%;
+        height: 4rem;
+        left: -10%;
+        border-radius: 8px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease, background-image 0.3s ease;
+    }
+
+    &.isActive::before {
+        background-image: linear-gradient(135deg, #74ebd5, #acb6e5);
+        animation: rotate 3s linear infinite;
+        opacity: 1;
     }
     &:hover {
-        background-color: rgba(126, 196, 207, 0.2);
+        & > span {
+            color: #ff9a9e;
+            font-size: 2.4rem;
+            z-index: 1;
+        }
+
+        & > h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            z-index: 1;
+            color: #fad0c4;
+        }
+    }
+    &:hover::before {
+        background-image: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        animation: rotate 3s linear infinite;
+        opacity: 1;
+        & > span {
+            color: #ff9a9e;
+            font-size: 2.4rem;
+            z-index: 1;
+        }
+
+        & > h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            z-index: 1;
+            color: #fad0c4;
+        }
     }
 
-    &.isActive {
-        background-color: rgba(253, 197, 217, 0.2);
+    // Hover hoặc Active thì hiển thị viền
+    &.isActive::before,
+    &:hover::before {
+        animation: rotate 3s linear infinite;
+        opacity: 1;
+    }
+    &.isActive:hover::before {
+        background-image: linear-gradient(
+            135deg,
+            #74ebd5,
+            #acb6e5
+        ); // override bằng màu hover
+    }
+}
+.isActive {
+    & > span {
+        color: #74ebd5;
+        font-size: 2.4rem;
+        z-index: 1;
     }
 
-    &.isActive:hover {
-        background-color: rgba(237, 240, 96, 0.2);
+    & > h3 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        z-index: 1;
+        color: #acb6e5;
+    }
+    &:hover {
+        & > span {
+            color: #74ebd5;
+            font-size: 2.4rem;
+            z-index: 1;
+        }
+
+        & > h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            z-index: 1;
+            color: #acb6e5;
+        }
+    }
+}
+/* Animation xoay */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

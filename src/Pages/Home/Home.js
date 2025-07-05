@@ -9,7 +9,8 @@ function Home() {
     return (
         <>
             <Seo />
-            <div className={cx("wrapper")}>Home Page</div>
+            {/* html */}
+            <div className={cx("wrapper")}></div>
         </>
     );
 }

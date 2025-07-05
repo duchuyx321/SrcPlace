@@ -84,7 +84,7 @@ function Search() {
                             <FiLoader />
                         </span>
                     )}
-                    <button primary className={cx("btn_search")} small>
+                    <button className={cx("btn_search")}>
                         <IoIosSearch />
                     </button>
                 </div>

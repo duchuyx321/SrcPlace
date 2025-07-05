@@ -1,17 +1,21 @@
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
 import { BsFillCartFill } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "./UserActions.module.scss";
 import Menu from "~/Components/Wrapper/Menu";
 
 const cx = classNames.bind(style);
-function Shopping() {
+function Shopping({ count = 0 }) {
     const [isHidden, setIsHidden] = useState(false);
-    const [countShopping, setCountShopping] = useState(100);
-    const [resultShopping, setResultShopping] = useState([1, 2, 3, 4, 5]);
+    const [countShopping, setCountShopping] = useState(count);
+    const [resultShopping, setResultShopping] = useState([]);
 
+    useEffect(() => {
+        console.log("thêm count");
+        setCountShopping(count);
+    }, [count]);
     const handleHidden = () => {
         setIsHidden(!isHidden);
     };

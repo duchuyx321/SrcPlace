@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { AiOutlineHome, AiFillTags } from "react-icons/ai";
+import { BsCaretLeftFill } from "react-icons/bs";
 import { LuAlignJustify } from "react-icons/lu";
 import { NavLink } from "react-router";
 
@@ -31,12 +32,14 @@ function Sidebar() {
         <div className={cx("wrapper")}>
             {MenuSidebars.map((item) => (
                 <NavLink
+                    key={item.key}
                     to={item.to}
                     className={(e) =>
                         cx("btn_sidebar", { isActive: e.isActive })
                     }
                 >
-                    {item.name}
+                    <span>{item.icon}</span>
+                    <h3>{item.name}</h3>
                 </NavLink>
             ))}
         </div>

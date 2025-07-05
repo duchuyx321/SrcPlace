@@ -5,7 +5,6 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { FiLoader } from "react-icons/fi";
 
 import style from "./Search.module.scss";
-import Button from "~/Components/Button";
 import Menu from "~/Components/Wrapper/Menu";
 import { useDebounce } from "~/Hooks";
 import PublicService from "~/Services/PublicService";
@@ -85,9 +84,9 @@ function Search() {
                             <FiLoader />
                         </span>
                     )}
-                    <Button primary className={cx("btn_search")} small>
+                    <button primary className={cx("btn_search")} small>
                         <IoIosSearch />
-                    </Button>
+                    </button>
                 </div>
             </Menu>
         </div>

@@ -55,7 +55,7 @@ function Menu({
     return (
         <HeadlessTippy
             delay={[0, 700]}
-            offset={[0, 8]}
+            offset={[8, 12]}
             visible={hideOnClick}
             placement="bottom-end"
             interactive

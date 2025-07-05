@@ -1,17 +1,44 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        gap: 1rem;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .wrapper {
+        gap: 3rem;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        gap: 3rem;
+    }
+}
 .wrapper {
     display: flex;
     align-items: center;
-    gap: 3rem;
 }
 .wrapper_event {
     position: relative;
     z-index: 99;
     padding: 8px;
+    width: 4rem;
+    height: 4rem;
+    background-color: #dcdcdc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+}
+.isHidden {
+    background-color: var(--powder-blue);
 }
 .count {
     position: absolute;
-    width: 2.2rem;
-    height: 2.2rem;
+    min-width: 1.9rem;
+    height: 1.9rem;
     border-radius: 50%;
     background-color: rgb(246, 7, 7);
     color: var(--white-color);
@@ -19,16 +46,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    right: 4px;
-    top: 9px;
+    right: -8px;
+    padding: 2px;
+    top: -2px;
     z-index: 1;
 }
 .icon {
-    font-size: 4rem;
+    font-size: 2.2rem;
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1;
+    color: var(--white-color);
 }

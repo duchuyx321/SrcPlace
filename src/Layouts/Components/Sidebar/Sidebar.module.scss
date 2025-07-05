@@ -4,6 +4,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 8px;
     }
 }
 // tablet (740px - 1024px)
@@ -12,6 +13,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 8px;
     }
 }
 // desktop >= 1024px
@@ -19,26 +21,31 @@
     .wrapper {
         display: flex;
         flex-direction: column;
+        padding: 2rem 16px;
     }
 }
 
-.wrapper {
-    padding: 2rem 16px;
-}
 .btn_sidebar {
     width: 100%;
     min-height: 6rem;
     padding: 16px;
-    font-size: 2rem;
-    font-weight: 900;
     border-radius: 8px;
-
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    & > span {
+        font-size: 2.4rem;
+    }
+    & > h3 {
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
     &:hover {
         background-color: rgba(126, 196, 207, 0.2);
     }
 
     &.isActive {
-        background-color: rgba(237, 240, 96, 0.2);
+        background-color: rgba(253, 197, 217, 0.2);
     }
 
     &.isActive:hover {

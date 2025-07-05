@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
-import { CiBellOn } from "react-icons/ci";
+import { FaBell } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 
 import style from "./UserActions.module.scss";
@@ -9,7 +9,7 @@ import Menu from "~/Components/Wrapper/Menu";
 const cx = classNames.bind(style);
 function Notify({ count = 0 }) {
     const [countNotify, setCountNotify] = useState(count);
-    const [isNotify, setIsNotify] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
     const [resultNotify, setResultNotify] = useState([1, 2, 3, 4, 5]);
 
     useEffect(() => {
@@ -25,23 +25,23 @@ function Notify({ count = 0 }) {
         }
     }, [countNotify]);
     const handleHidden = () => {
-        setIsNotify(!isNotify);
+        setIsHidden(!isHidden);
     };
     return (
         <Menu
-            hideOnClick={isNotify}
+            hideOnClick={isHidden}
             small
             title="Thông Báo"
             items={resultNotify}
-            onClickHide={setIsNotify}
+            onClickHide={setIsHidden}
         >
             <button
                 onClick={() => handleHidden()}
-                className={cx("wrapper_event")}
+                className={cx("wrapper_event", { isHidden })}
             >
                 <div className={cx("count")}>{countNotify}</div>
                 <span className={cx("icon")}>
-                    <CiBellOn />
+                    <FaBell />
                 </span>
             </button>
         </Menu>

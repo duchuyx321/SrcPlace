@@ -1,19 +1,19 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
-import { IoMdPricetags } from "react-icons/io";
 
 import style from "./Home.module.scss";
 import Seo from "~/Components/Seo";
 import Search from "~/Layouts/Components/Header/Components/Search/Search";
 import Button from "~/Components/Button";
-import Product from "~/Components/Product";
+import ProductSessions from "~/Components/ProductSessions";
 
 const cx = classNames.bind(style);
 
 function Home() {
     const [resultProjectCharge, setResultProjectCharge] = useState([
-        1, 1, 1, 1, 1,
+        1, 1, 1, 1,
     ]);
+
     return (
         <>
             <Seo />
@@ -29,17 +29,23 @@ function Home() {
                     <div className={cx("wrapper_search")}>
                         <Search />
                     </div>
+                    <div className={cx("wrapper_btn")}>
+                        <Button outline className={cx("btn_contact")}>
+                            Liên Hệ Tư Vấn
+                        </Button>
+                    </div>
                 </div>
                 <div className={cx("container")}>
-                    <div className={cx("charge")}>
-                        <h3>Các Dự Án Trả Phí Nỗi Bật</h3>
-                        <div className={cx("charge_product")}>
-                            <Product />
-                            <Product />
-                            <Product />
-                            <Product />
-                        </div>
-                    </div>
+                    <ProductSessions
+                        title="Top Dự Án Trả Phí"
+                        to="/du-an/tra-phi"
+                        products={resultProjectCharge}
+                    />
+                    <ProductSessions
+                        title="Top Dự Án Miễn Phí"
+                        to="/du-an/mien-phi"
+                        products={resultProjectCharge}
+                    />
                 </div>
             </div>
         </>

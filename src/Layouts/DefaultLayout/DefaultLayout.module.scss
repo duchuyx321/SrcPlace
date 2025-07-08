@@ -55,12 +55,14 @@
     height: var(--header-height);
     position: fixed;
     top: 0;
+    border-bottom: 1px solid #eaeaea;
+    z-index: 100;
 }
 .container {
     width: 100%;
     flex: 1;
     padding-top: var(--header-height);
-    background-color: rgb(120 118 118 / 40%);
+    background-color: rgb(120 118 118 / 50%);
 }
 .body {
     width: 100%;
@@ -71,10 +73,11 @@
     position: fixed;
     background-color: rgb(120 118 118 / 40%);
     box-sizing: border-box;
+    z-index: 100;
 }
 .content {
     flex: 1;
-    min-height: 100vh;
+    min-height: 90vh;
     overflow: hidden;
 }
 .waring {

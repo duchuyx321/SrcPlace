@@ -33,7 +33,9 @@ function Shopping({ count = 0 }) {
                 onClick={() => handleHidden()}
                 className={cx("wrapper_event", { isHidden })}
             >
-                <div className={cx("count")}>{countShopping}</div>
+                {countShopping !== 0 && (
+                    <div className={cx("count")}>{countShopping}</div>
+                )}
                 <span className={cx("icon")}>
                     <BsFillCartFill />
                 </span>

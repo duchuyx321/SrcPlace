@@ -39,7 +39,9 @@ function Notify({ count = 0 }) {
                 onClick={() => handleHidden()}
                 className={cx("wrapper_event", { isHidden })}
             >
-                <div className={cx("count")}>{countNotify}</div>
+                {countNotify !== 0 && (
+                    <div className={cx("count")}>{countNotify}</div>
+                )}
                 <span className={cx("icon")}>
                     <FaBell />
                 </span>

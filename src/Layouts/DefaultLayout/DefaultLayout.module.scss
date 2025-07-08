@@ -1,13 +1,13 @@
 // responsive
 :root {
-    --margin_top: 6rem;
+    --header-height: 6rem;
     --height--sidebar: 6rem;
     --width--sidebar: 19rem;
 }
 // mobile < 740px
 @media only screen and (max-width: 739px) {
     .container {
-        margin-bottom: var(--height--sidebar);
+        padding-bottom: var(--height--sidebar);
     }
     .sidebar {
         min-width: 100%;
@@ -18,7 +18,7 @@
 // tablet (740px - 1024px)
 @media only screen and (min-width: 740px) and (max-width: 1023px) {
     .container {
-        margin-bottom: var(--height--sidebar);
+        padding-bottom: var(--height--sidebar);
     }
     .sidebar {
         min-width: 100%;
@@ -29,7 +29,7 @@
 // desktop >= 1024px
 @media only screen and (min-width: 1024px) {
     .container {
-        margin-left: var(--width--sidebar);
+        padding-left: var(--width--sidebar);
     }
     .sidebar {
         min-width: var(--width--sidebar);
@@ -43,17 +43,24 @@
     width: 100%;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    background-image: url("../../Assets/Image/srcPlaceIntro.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 .header {
     width: 100%;
-    height: var(--margin_top);
+    height: var(--header-height);
     position: fixed;
     top: 0;
 }
 .container {
     width: 100%;
     flex: 1;
-    margin-top: var(--margin_top);
+    padding-top: var(--header-height);
+    background-color: rgb(120 118 118 / 40%);
 }
 .body {
     width: 100%;
@@ -62,11 +69,13 @@
 }
 .sidebar {
     position: fixed;
-    background-color: var(--white-color);
+    background-color: rgb(120 118 118 / 40%);
     box-sizing: border-box;
 }
 .content {
     flex: 1;
+    min-height: 100vh;
+    overflow: hidden;
 }
 .waring {
     display: flex;

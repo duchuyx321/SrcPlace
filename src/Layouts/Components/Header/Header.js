@@ -6,12 +6,11 @@ import Image from "~/Components/Image";
 import image from "~/Assets/Image";
 import Button from "~/Components/Button";
 import UserActions from "~/Layouts/Components/Header/Components/UserActions";
-import Search from "./Components/Search/Search";
 import Me from "~/Components/Me";
 
 const cx = classNames.bind(style);
 function Header() {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
         // setIsLogin(!!AccessToken);
@@ -26,7 +25,6 @@ function Header() {
                 />
                 <h3>Thư Viện Đồ Án</h3>
             </div>
-            <Search />
             <div className={cx("right")}>
                 {isLogin ? (
                     <div className={cx("right_wrapper")}>

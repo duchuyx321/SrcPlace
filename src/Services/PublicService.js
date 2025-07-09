@@ -16,6 +16,20 @@ class PublicService {
             return { error: error.message };
         }
     }
+    async getProject({ limit = 4, page = 1 } = {}) {
+        try {
+            const result = await httpRequest.GET("", {
+                params: {
+                    limit,
+                    page,
+                },
+            });
+            return result.data;
+        } catch (error) {
+            console.log(error);
+            return { error: error.message };
+        }
+    }
 }
 
 export default new PublicService();

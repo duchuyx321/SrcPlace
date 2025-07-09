@@ -14,7 +14,27 @@ function ProductSessions({
     to = "",
     className = "",
     products = [],
+    is_animation = false,
 }) {
+    const [itemAction, setItemAction] = useState(0);
+    const [isHover, setIsHover] = useState(true);
+    useEffect(() => {
+        if (is_animation) {
+            const interval = setInterval(() => {
+                setItemAction((item) => {
+                    return item >= products.length - 1 ? 0 : item + 1;
+                });
+            }, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [products.length, is_animation]);
+
+    const handleOnMouseEnter = () => {
+        setIsHover(false);
+    };
+    const handleOnMouseLeave = () => {
+        setIsHover(true);
+    };
     return (
         <div className={cx("wrapper", className)}>
             <div className={cx("extend")}>
@@ -30,7 +50,16 @@ function ProductSessions({
             </div>
             <div className={cx("products_item")}>
                 {products.map((product, index) => (
-                    <Product key={index} className={cx("product")} />
+                    <Product
+                        key={index}
+                        className={cx("product")}
+                        is_action={
+                            is_animation && isHover && itemAction === index
+                        }
+                        item={product}
+                        handleOnMouseEnter={handleOnMouseEnter}
+                        handleOnMouseLeave={handleOnMouseLeave}
+                    />
                 ))}
             </div>
         </div>

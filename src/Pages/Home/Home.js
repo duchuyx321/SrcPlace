@@ -1,11 +1,12 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "./Home.module.scss";
 import Seo from "~/Components/Seo";
 import Search from "~/Layouts/Components/Header/Components/Search/Search";
 import Button from "~/Components/Button";
 import ProductSessions from "~/Components/ProductSessions";
+import PublicService from "~/Services/PublicService";
 
 const cx = classNames.bind(style);
 
@@ -13,7 +14,16 @@ function Home() {
     const [resultProjectCharge, setResultProjectCharge] = useState([
         1, 1, 1, 1,
     ]);
-
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await PublicService.getProject();
+            if (!result["error"]) {
+                console.log(result);
+                setResultProjectCharge(result.paidProjects);
+            }
+        };
+        fetchApi();
+    }, []);
     return (
         <>
             <Seo />
@@ -37,14 +47,10 @@ function Home() {
                 </div>
                 <div className={cx("container")}>
                     <ProductSessions
-                        title="Top Dự Án Trả Phí"
+                        title="Top Dự Án Nỗi Bật"
                         to="/du-an/tra-phi"
                         products={resultProjectCharge}
-                    />
-                    <ProductSessions
-                        title="Top Dự Án Miễn Phí"
-                        to="/du-an/mien-phi"
-                        products={resultProjectCharge}
+                        is_animation
                     />
                 </div>
             </div>

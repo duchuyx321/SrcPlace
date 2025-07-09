@@ -1,7 +1,7 @@
 // mobile < 740px
 @media only screen and (max-width: 739px) {
     .product {
-        flex: 1 1 calc(45% - 16px);
+        flex: 0 0 calc(45% - 16px);
         max-width: calc(45% - 16px);
     }
     .extend {
@@ -11,7 +11,7 @@
 // tablet (740px - 1024px)
 @media only screen and (min-width: 740px) and (max-width: 1023px) {
     .product {
-        flex: 1 1 calc(22% - 16px);
+        flex: 0 0 calc(22% - 16px);
         max-width: calc(22% - 16px);
     }
     .extend {
@@ -21,11 +21,21 @@
 // desktop >= 1024px
 @media only screen and (min-width: 1024px) {
     .product {
-        flex: 1 1 calc(20% - 16px);
-        max-width: calc(20% - 16px);
+        flex: 0 0 calc(23% - 16px);
+        max-width: calc(23% - 16px);
     }
     .extend {
-        padding: 0px 3%;
+        padding: 0px 5%;
+    }
+}
+//  > 1400
+@media only screen and (min-width: 1400px) {
+    .product {
+        flex: 0 0 calc(23% - 16px);
+        max-width: calc(23% - 16px);
+    }
+    .extend {
+        padding: 0px 5%;
     }
 }
 .wrapper {
@@ -73,4 +83,10 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
+}
+.product:hover {
+    .action {
+        transform: none;
+        box-shadow: none;
+    }
 }

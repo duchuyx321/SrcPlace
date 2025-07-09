@@ -5,18 +5,42 @@ import { Link } from "react-router";
 import style from "./Product.module.scss";
 import Image from "~/Components/Image";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
+import { GrView } from "react-icons/gr";
+import image from "~/Assets/Image/image.png";
 
 const cx = classNames.bind(style);
 
-function Product({ item = {}, className = "" }) {
+const defaultFunc = () => {};
+function Product({
+    item = {},
+    className = "",
+    is_action = false,
+    handleOnMouseEnter = defaultFunc,
+    handleOnMouseLeave = defaultFunc,
+}) {
+    const classes = cx("wrapper", {
+        [className]: className,
+        is_action,
+    });
     return (
-        <Link className={cx("wrapper", className)}>
+        <Link
+            to={item.slug}
+            className={classes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+        >
             <div className={cx("image")}>
-                <Image src="" alt="product" />
+                <Image src={image} alt="product" />
             </div>
             <div className={cx("content")}>
-                <h3>Tên Đơn Hàng đang test nè đang test nè đang test nè</h3>
-                <p>{formatNumberPrice({ number: 500000 })}</p>
+                <h3>{item.title || "Đố Án Của SrcPlace"}</h3>
+                <p>{formatNumberPrice({ number: item.price || 500000 })}</p>
+                <div className={cx("views")}>
+                    <span>
+                        <GrView />
+                    </span>
+                    <p>{item.sold || 0}</p>
+                </div>
             </div>
         </Link>
     );
@@ -25,6 +49,9 @@ function Product({ item = {}, className = "" }) {
 Product.propTypes = {
     // item: PropTypes.object.isRequired,
     className: PropTypes.string,
+    is_action: PropTypes.bool,
+    handleOnHover: PropTypes.func,
+    handleOnMouseLeave: PropTypes.func,
 };
 
 export default Product;

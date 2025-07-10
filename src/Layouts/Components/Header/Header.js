@@ -20,7 +20,7 @@ function Header() {
             <div className={cx("left")}>
                 <Image
                     className={cx("logo")}
-                    src={image.logoBlackImage}
+                    src={image.logoWhiteImage}
                     alt="Logo SrcPlace"
                 />
                 <h3>Thư Viện Đồ Án</h3>

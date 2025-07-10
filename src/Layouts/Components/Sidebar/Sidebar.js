@@ -1,7 +1,6 @@
 import classNames from "classnames/bind";
 import { AiFillHome, AiFillTags } from "react-icons/ai";
 
-import { BsCaretLeftFill } from "react-icons/bs";
 import { LuAlignJustify } from "react-icons/lu";
 import { NavLink } from "react-router";
 
@@ -12,22 +11,23 @@ const MenuSidebars = [
     {
         key: "Home",
         to: "/",
-        name: "Trang Chủ",
+        name: "Home",
         icon: <AiFillHome />,
     },
     {
         key: "category",
-        to: "/category",
-        name: "Danh Mục",
+        to: "/products",
+        name: "Sản Phẩm",
         icon: <LuAlignJustify />,
     },
     {
         key: "tags",
-        to: "/tags",
-        name: "Tags",
+        to: "/tutorial",
+        name: "Hướng Dẫn",
         icon: <AiFillTags />,
     },
 ];
+
 function Sidebar() {
     return (
         <div className={cx("wrapper")}>

@@ -24,6 +24,12 @@ function Home() {
         };
         fetchApi();
     }, []);
+    const handleOnScroll = () => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+        });
+    };
     return (
         <>
             <Seo />
@@ -40,7 +46,11 @@ function Home() {
                         <Search />
                     </div>
                     <div className={cx("wrapper_btn")}>
-                        <Button outline className={cx("btn_contact")}>
+                        <Button
+                            outline
+                            className={cx("btn_contact")}
+                            onClick={handleOnScroll}
+                        >
                             Liên Hệ Tư Vấn
                         </Button>
                     </div>
@@ -48,7 +58,7 @@ function Home() {
                 <div className={cx("container")}>
                     <ProductSessions
                         title="Top Dự Án Nỗi Bật"
-                        to="/du-an/tra-phi"
+                        to="/products"
                         products={resultProjectCharge}
                         is_animation
                     />

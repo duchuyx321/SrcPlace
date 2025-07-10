@@ -6,7 +6,6 @@ import style from "./Product.module.scss";
 import Image from "~/Components/Image";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 import { GrView } from "react-icons/gr";
-import image from "~/Assets/Image/image.png";
 
 const cx = classNames.bind(style);
 
@@ -24,13 +23,13 @@ function Product({
     });
     return (
         <Link
-            to={item.slug}
+            to={item.slug || "do-an-test"}
             className={classes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
             <div className={cx("image")}>
-                <Image src={image} alt="product" />
+                <Image src={item.image_url || ""} alt="product" />
             </div>
             <div className={cx("content")}>
                 <h3>{item.title || "Đố Án Của SrcPlace"}</h3>

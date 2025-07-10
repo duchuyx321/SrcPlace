@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
-import { CiWarning } from "react-icons/ci";
+import { useEffect, useRef, useState } from "react";
 
 import style from "./DefaultLayout.module.scss";
 import Header from "~/Layouts/Components/Header";
@@ -11,6 +10,10 @@ import Sidebar from "~/Layouts/Components/Sidebar";
 const cx = classNames.bind(style);
 
 function DefaultLayout({ children }) {
+    const footerRef = useRef();
+    const handleOnScroolFooter = () => {
+        footerRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <div className={cx("wrapper")}>
             <header className={cx("header")}>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import style from "./Header.module.scss";
 import Image from "~/Components/Image";
-import image from "~/Assets/Image";
+import image from "~/Assets/images";
 import Button from "~/Components/Button";
 import UserActions from "~/Layouts/Components/Header/Components/UserActions";
 import Me from "~/Components/Me";

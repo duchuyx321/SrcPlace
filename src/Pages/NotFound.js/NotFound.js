@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import style from "./NotFund.module.scss";
 import Seo from "~/Components/Seo";

@@ -5,7 +5,7 @@ import { RiMapPin2Fill } from "react-icons/ri";
 
 import style from "./Footer.module.scss";
 import Session from "./Components/Session";
-import image from "~/Assets/Image";
+import image from "~/Assets/images";
 import config from "~/Config";
 
 const cx = classNames.bind(style);

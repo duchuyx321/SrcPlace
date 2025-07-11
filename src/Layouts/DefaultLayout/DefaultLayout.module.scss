@@ -44,7 +44,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-image: url("../../Assets/Image/srcPlaceIntro.gif");
+    background-image: url("../../Assets/images/srcPlaceIntro.gif");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -77,7 +77,7 @@
 }
 .content {
     flex: 1;
-    min-height: 90vh;
+    min-height: 80vh;
     overflow: hidden;
 }
 .waring {

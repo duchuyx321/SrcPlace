@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { PublicRouters, UserRouters, AdminRouters } from "~/Routers";
 import renderRoute from "~/Routers/renderRoute";

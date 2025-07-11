@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import PropTypes from "prop-types";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import style from "./Product.module.scss";
 import Image from "~/Components/Image";
@@ -23,7 +23,7 @@ function Product({
     });
     return (
         <Link
-            to={`/product/${item.slug}` || `/product/do-an-test`}
+            to={item.slug ? `/product/${item.slug}` : `/product/do-an-test`}
             className={classes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

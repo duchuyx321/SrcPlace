@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import style from "./Session.module.scss";
 import Button from "~/Components/Button";
 import Image from "~/Components/Image";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(style);
 function Session({ title = "", description = "", items = [] }) {
@@ -17,11 +17,14 @@ function Session({ title = "", description = "", items = [] }) {
                     item.src ? (
                         <Link
                             key={index}
-                            href={item.href}
+                            to={item.to}
                             className={cx("item_image")}
                         >
                             <span className="image">
-                                <Image src={item.src} alt={item.alt} />
+                                <Image
+                                    src={item.src || undefined}
+                                    alt={item.alt}
+                                />
                             </span>
                             <h3>{item.title}</h3>
                         </Link>

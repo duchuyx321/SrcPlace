@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { AiFillHome, AiFillTags } from "react-icons/ai";
 
 import { LuAlignJustify } from "react-icons/lu";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 import style from "./Sidebar.module.scss";
 import config from "~/Config";

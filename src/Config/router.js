@@ -1,6 +1,8 @@
 const routers = {
+    products: "/product",
+    tutorial: "/tutorial",
+    detailProduct: "/product/:slug",
     home: "/",
-    detail: "/:slug",
     notFound: "*", // page 404
 };
 export default routers;

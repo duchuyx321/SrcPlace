@@ -15,6 +15,7 @@ function ProductSessions({
     className = "",
     products = [],
     is_animation = false,
+    is_more = true,
 }) {
     const [itemAction, setItemAction] = useState(0);
     const [isHover, setIsHover] = useState(true);
@@ -39,14 +40,16 @@ function ProductSessions({
         <div className={cx("wrapper", className)}>
             <div className={cx("extend")}>
                 <h3>{title}</h3>
-                <Button
-                    text
-                    to={to}
-                    className={cx("products_more")}
-                    rightIcon={<FaAnglesRight />}
-                >
-                    Xem Thêm
-                </Button>
+                {is_more && (
+                    <Button
+                        text
+                        to={to}
+                        className={cx("products_more")}
+                        rightIcon={<FaAnglesRight />}
+                    >
+                        Xem Thêm
+                    </Button>
+                )}
             </div>
             <div className={cx("products_item")}>
                 {products.map((product, index) => (
@@ -71,7 +74,8 @@ ProductSessions.propTypes = {
     to: PropTypes.string,
     className: PropTypes.string,
     products: PropTypes.array.isRequired,
-    isAnimation: PropTypes.bool,
+    is_animation: PropTypes.bool,
+    is_more: PropTypes.bool,
 };
 
 export default ProductSessions;

@@ -6,6 +6,7 @@ import { RiMapPin2Fill } from "react-icons/ri";
 import style from "./Footer.module.scss";
 import Session from "./Components/Session";
 import image from "~/Assets/Image";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
 
@@ -57,7 +58,7 @@ const MenuFooter = [
                 src: image.logoWhiteImage,
                 alt: "Ảnh Logo SrcPlace",
                 title: "SrcPlace",
-                to: "/",
+                to: config.routers.home,
             },
         ],
     },

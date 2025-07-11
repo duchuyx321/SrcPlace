@@ -5,24 +5,25 @@ import { LuAlignJustify } from "react-icons/lu";
 import { NavLink } from "react-router";
 
 import style from "./Sidebar.module.scss";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
 const MenuSidebars = [
     {
         key: "Home",
-        to: "/",
+        to: config.routers.home,
         name: "Home",
         icon: <AiFillHome />,
     },
     {
         key: "category",
-        to: "/products",
+        to: config.routers.products,
         name: "Sản Phẩm",
         icon: <LuAlignJustify />,
     },
     {
         key: "tags",
-        to: "/tutorial",
+        to: config.routers.tutorial,
         name: "Hướng Dẫn",
         icon: <AiFillTags />,
     },

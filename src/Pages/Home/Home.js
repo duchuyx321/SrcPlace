@@ -7,6 +7,7 @@ import Search from "~/Layouts/Components/Header/Components/Search/Search";
 import Button from "~/Components/Button";
 import ProductSessions from "~/Components/ProductSessions";
 import PublicService from "~/Services/PublicService";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
 
@@ -58,7 +59,7 @@ function Home() {
                 <div className={cx("container")}>
                     <ProductSessions
                         title="Top Dự Án Nỗi Bật"
-                        to="/products"
+                        to={config.routers.products}
                         products={resultProjectCharge}
                         is_animation
                     />

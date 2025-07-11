@@ -1,0 +1,18 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn_page {
+    min-width: 5rem;
+    border-color: var(--white-color);
+    color: var(--white-color);
+    & + .btn_page {
+        margin-left: 8px;
+    }
+}
+.current {
+    border-color: #00ffff;
+    color: #00ffff;
+}

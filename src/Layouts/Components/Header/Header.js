@@ -7,9 +7,12 @@ import image from "~/Assets/images";
 import Button from "~/Components/Button";
 import UserActions from "~/Layouts/Components/Header/Components/UserActions";
 import Me from "~/Components/Me";
+import Search from "~/Components/Search";
+import { Link } from "react-router-dom";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
-function Header() {
+function Header({ is_searchHeader = true }) {
     const [isLogin, setIsLogin] = useState(false);
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
@@ -18,13 +21,16 @@ function Header() {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("left")}>
-                <Image
-                    className={cx("logo")}
-                    src={image.logoWhiteImage}
-                    alt="Logo SrcPlace"
-                />
-                <h3>Thư Viện Đồ Án</h3>
+                <Link to={config.routers.home} className={cx("comeHome")}>
+                    <Image
+                        className={cx("logo")}
+                        src={image.logoWhiteImage}
+                        alt="Logo SrcPlace"
+                    />
+                    <h3>Thư Viện Đồ Án</h3>
+                </Link>
             </div>
+            {is_searchHeader && <Search />}
             <div className={cx("right")}>
                 {isLogin ? (
                     <div className={cx("right_wrapper")}>

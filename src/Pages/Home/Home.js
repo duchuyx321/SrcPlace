@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import style from "./Home.module.scss";
 import Seo from "~/Components/Seo";
-import Search from "~/Layouts/Components/Header/Components/Search/Search";
+import Search from "~/Components/Search";
 import Button from "~/Components/Button";
 import ProductSessions from "~/Components/ProductSessions";
 import PublicService from "~/Services/PublicService";

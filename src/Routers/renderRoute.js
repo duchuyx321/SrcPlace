@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 function renderRoute({ Route, data, role = null, index }) {
     const Page = data.component;
     let Layout = DefaultLayout;
+    let props = data.props || {};
     if (data.layout) {
         Layout = data.layout;
     } else if (data.layout === null) {
@@ -20,7 +21,7 @@ function renderRoute({ Route, data, role = null, index }) {
             path={data.path}
             element={
                 <ProtectedRoute role={role}>
-                    <Layout>
+                    <Layout {...props}>
                         <Page />
                     </Layout>
                 </ProtectedRoute>

@@ -9,7 +9,7 @@ import Button from "~/Components/Button";
 const cx = classNames.bind(style);
 
 function MenuItem({ item, isImage = false, isPrice = false, onChange }) {
-    const link = item.to || (item.slug ? `/${item.slug}` : "");
+    const link = item.to || (item.slug ? `/${item.slug}` : "/do-an-test");
     const imageSrc = item.thumbnail?.image_url || item.image_url || "";
     const title = item.name || item.title || "";
     const price = item.price;

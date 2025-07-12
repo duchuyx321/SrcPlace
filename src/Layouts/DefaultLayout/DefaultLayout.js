@@ -8,11 +8,11 @@ import Sidebar from "~/Layouts/Components/Sidebar";
 
 const cx = classNames.bind(style);
 
-function DefaultLayout({ children }) {
+function DefaultLayout({ children, is_searchHeader = true }) {
     return (
         <div className={cx("wrapper")}>
             <header className={cx("header")}>
-                <Header />
+                <Header is_searchHeader={is_searchHeader} />
             </header>
             <div className={cx("container")}>
                 <aside className={cx("sidebar")}>
@@ -31,5 +31,6 @@ function DefaultLayout({ children }) {
 
 DefaultLayout.propTypes = {
     children: PropTypes.node.isRequired,
+    is_searchHeader: PropTypes.bool,
 };
 export default DefaultLayout;

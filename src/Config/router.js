@@ -1,7 +1,7 @@
 const routers = {
     products: "/product",
     tutorial: "/tutorial",
-    detailProduct: "/product/:slug",
+    detailProduct: "/:slug",
     home: "/",
     notFound: "*", // page 404
 };

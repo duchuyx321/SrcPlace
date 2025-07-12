@@ -23,7 +23,7 @@ function Product({
     });
     return (
         <Link
-            to={item.slug ? `/product/${item.slug}` : `/product/do-an-test`}
+            to={item.slug ? `/${item.slug}` : `/do-an-test`}
             className={classes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

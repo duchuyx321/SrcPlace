@@ -29,3 +29,25 @@
     color: var(--white-color);
     line-height: 1.5;
 }
+.metaInfo {
+    margin-top: 8px;
+    user-select: none;
+}
+.price {
+    width: 100%;
+    padding: 8px 24px;
+    font-size: 24px;
+    color: #f9543b;
+}
+.support {
+    width: 100%;
+    margin-top: 8px;
+    padding: 0 24px;
+}
+.action {
+    margin-top: 5rem;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    color: var(--white-color);
+}

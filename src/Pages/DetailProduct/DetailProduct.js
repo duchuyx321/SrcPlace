@@ -1,11 +1,16 @@
 import classNames from "classnames/bind";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { BsFillCartPlusFill } from "react-icons/bs";
 
 import style from "./DetailProduct.module.scss";
 import Seo from "~/Components/Seo";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
 import images from "~/Assets/images";
 import Image from "~/Components/Image";
+import MetaInfo from "./Components/MetaInfo";
+import Support from "./Components/Support";
+import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
+import Button from "~/Components/Button";
 
 const cx = classNames.bind(style);
 
@@ -34,7 +39,27 @@ function DetailProduct() {
                         [ 2025 ] Đồ Án Website Bán Điện Thoại | ReactJs - NodeJS
                         - MongoDB - Gemini
                     </h3>
-                    <div className={cx("metaInfo")}></div>
+                    <div className={cx("metaInfo")}>
+                        <MetaInfo />
+                    </div>
+                    <div className={cx("price")}>
+                        <p>{formatNumberPrice({ number: 500000 })}</p>
+                    </div>
+                    <div className={cx("support")}>
+                        <Support />
+                    </div>
+                    <div className={cx("action")}>
+                        <Button
+                            outline
+                            className={cx("btn_cart")}
+                            leftIcon={<BsFillCartPlusFill />}
+                        >
+                            Thêm Vào Giỏ Hàng
+                        </Button>
+                        <Button primary className={cx("btn_buy")}>
+                            Mua Ngay
+                        </Button>
+                    </div>
                 </div>
             </div>
             ;

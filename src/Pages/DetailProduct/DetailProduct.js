@@ -1,7 +1,8 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BsFillCartPlusFill } from "react-icons/bs";
+import { MdOutlineFolderZip } from "react-icons/md";
 
 import style from "./DetailProduct.module.scss";
 import Seo from "~/Components/Seo";
@@ -16,7 +17,27 @@ const cx = classNames.bind(style);
 
 function DetailProduct() {
     const { slug } = useParams();
+    const [isLogin, setIsLogin] = useState(
+        !!localStorage.getItem("AccessToken")
+    );
+    useEffect(() => {
+        const AccessToken = localStorage.getItem("AccessToken");
+        setIsLogin(!!AccessToken);
+    }, []);
     const [ResultProduct, setResultProduct] = useState({});
+    const [isActionAddToCart, setIsActionAddToCart] = useState(false);
+    const handleAddToCart = () => {
+        // kiểm tra thêm điểu kiện đã đăng nhập hay chưa
+        if (!isLogin) {
+            // hiển thị thông báo chưa đăng nhập
+            return;
+        }
+        setIsActionAddToCart(true);
+        setTimeout(() => {
+            setIsActionAddToCart(false);
+        }, 500); // 500ms = thời gian animation
+    };
+    const handleOnBuy = () => {};
     return (
         <>
             <Seo
@@ -49,14 +70,25 @@ function DetailProduct() {
                         <Support />
                     </div>
                     <div className={cx("action")}>
-                        <Button
-                            outline
-                            className={cx("btn_cart")}
-                            leftIcon={<BsFillCartPlusFill />}
-                        >
-                            Thêm Vào Giỏ Hàng
-                        </Button>
-                        <Button primary className={cx("btn_buy")}>
+                        <div className={cx("btn_action")}>
+                            <Button
+                                outline
+                                className={cx("btn_action", "btn_cart")}
+                                onClick={() => handleAddToCart()}
+                                leftIcon={<BsFillCartPlusFill />}
+                            >
+                                Thêm Vào Giỏ Hàng
+                            </Button>
+                            <span
+                                className={cx("icon_project", {
+                                    addToCart: isActionAddToCart,
+                                })}
+                            >
+                                <MdOutlineFolderZip />
+                            </span>
+                        </div>
+
+                        <Button primary className={cx("btn_action", "btn_buy")}>
                             Mua Ngay
                         </Button>
                     </div>

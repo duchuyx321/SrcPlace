@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { BsFillCartPlusFill } from "react-icons/bs";
 import { MdOutlineFolderZip } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
 import style from "./DetailProduct.module.scss";
 import Seo from "~/Components/Seo";
@@ -12,11 +13,15 @@ import MetaInfo from "./Components/MetaInfo";
 import Support from "./Components/Support";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 import Button from "~/Components/Button";
+import { addToCart, calculateTotal } from "~/Features/Cart/cartSlice";
+import { buyNow, calculateTotalBuy } from "~/Features/Checkout/checkoutSlice";
 
 const cx = classNames.bind(style);
 
 function DetailProduct() {
     const { slug } = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(
         !!localStorage.getItem("AccessToken")
     );
@@ -24,7 +29,7 @@ function DetailProduct() {
         const AccessToken = localStorage.getItem("AccessToken");
         setIsLogin(!!AccessToken);
     }, []);
-    const [ResultProduct, setResultProduct] = useState({});
+    const [resultProduct, setResultProduct] = useState({});
     const [isActionAddToCart, setIsActionAddToCart] = useState(false);
     const handleAddToCart = () => {
         // kiểm tra thêm điểu kiện đã đăng nhập hay chưa
@@ -36,19 +41,40 @@ function DetailProduct() {
         setTimeout(() => {
             setIsActionAddToCart(false);
         }, 500); // 500ms = thời gian animation
+        //  thêm vào trong reducer
+        dispatch(
+            addToCart({
+                _id: resultProduct._id,
+                title: resultProduct.title,
+                image_url: resultProduct.image_url,
+                price: resultProduct.price,
+            })
+        );
+        dispatch(calculateTotal());
     };
-    const handleOnBuy = () => {};
+    const handleOnBuy = () => {
+        dispatch(
+            buyNow({
+                _id: resultProduct._id,
+                title: resultProduct.title,
+                image_url: resultProduct.image_url,
+                price: resultProduct.price,
+            })
+        );
+        dispatch(calculateTotalBuy());
+        navigate("/checkout");
+    };
     return (
         <>
             <Seo
                 title={`${
-                    ResultProduct.title || "Đố Án Của SrcPlace"
+                    resultProduct.title || "Đố Án Của SrcPlace"
                 } | SrcPlace - Thư Viện Đồ Án`}
                 description={`Đây là trang xem chi tiết sản phẩm ${
-                    ResultProduct.title || "Đố Án Của SrcPlace"
+                    resultProduct.title || "Đố Án Của SrcPlace"
                 } của SrcPlace`}
                 noIndex={false}
-                image={ResultProduct.image_url || images.noImage}
+                image={resultProduct.image_url || images.noImage}
                 canonical={`${process.env.REACT_APP_URL_CLIENT}${slug}`}
             />
             <div className={cx("wrapper")}>
@@ -88,7 +114,11 @@ function DetailProduct() {
                             </span>
                         </div>
 
-                        <Button primary className={cx("btn_action", "btn_buy")}>
+                        <Button
+                            primary
+                            className={cx("btn_action", "btn_buy")}
+                            onClick={() => handleOnBuy()}
+                        >
                             Mua Ngay
                         </Button>
                     </div>

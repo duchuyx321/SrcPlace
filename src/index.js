@@ -1,18 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
+
 import App from "~/App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyle from "~/Components/GlobalStyle";
-import { HelmetProvider } from "react-helmet-async";
+import { Provider } from "react-redux";
+import store from "~/App/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <HelmetProvider>
-            <GlobalStyle>
-                <App />
-            </GlobalStyle>
-        </HelmetProvider>
+        <Provider store={store}>
+            <HelmetProvider>
+                <GlobalStyle>
+                    <App />
+                </GlobalStyle>
+            </HelmetProvider>
+        </Provider>
     </React.StrictMode>
 );
 

@@ -45,6 +45,7 @@ function DetailProduct() {
         dispatch(
             addToCart({
                 _id: resultProduct._id,
+                slug: resultProduct.slug,
                 title: resultProduct.title,
                 image_url: resultProduct.image_url,
                 price: resultProduct.price,
@@ -56,6 +57,7 @@ function DetailProduct() {
         dispatch(
             buyNow({
                 _id: resultProduct._id,
+                slug: resultProduct.slug,
                 title: resultProduct.title,
                 image_url: resultProduct.image_url,
                 price: resultProduct.price,

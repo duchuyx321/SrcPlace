@@ -10,10 +10,10 @@ const checkoutSlice = createSlice({
         buyNow(state, action) {
             state.items = [
                 {
-                    _id: action.payload._id,
-                    title: action.payload.title,
-                    thumbnail: action.payload.image_url,
-                    price: action.payload.price,
+                    _id: action.payload._id || "1234567890",
+                    title: action.payload.title || "Đồ Án Test Của SrcPlace",
+                    thumbnail: action.payload.image_url || "",
+                    price: action.payload.price || 500000,
                 },
             ];
         },
@@ -31,6 +31,7 @@ const checkoutSlice = createSlice({
             }
             state.items.push({
                 _id: action.payload._id,
+                slug: action.payload.slug,
                 title: action.payload.title,
                 thumbnail: action.payload.image_url,
                 price: action.payload.price,

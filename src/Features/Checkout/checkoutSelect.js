@@ -1,2 +1,2 @@
-export const selectCartItems = (state) => state.checkout.items;
-export const selectCartTotal = (state) => state.checkout.total;
+export const selectCheckoutItems = (state) => state.checkout.items;
+export const selectCheckoutTotal = (state) => state.checkout.total;

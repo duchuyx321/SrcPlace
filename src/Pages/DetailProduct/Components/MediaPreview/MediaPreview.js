@@ -54,5 +54,7 @@ function MediaPreview({ items = [] }) {
         </div>
     );
 }
-
+MediaPreview.propTypes = {
+    items: PropTypes.array,
+};
 export default MediaPreview;

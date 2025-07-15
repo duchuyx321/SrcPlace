@@ -4,6 +4,7 @@ import Home from "~/Pages/Home";
 import DetailProduct from "~/Pages/DetailProduct";
 import NotFund from "~/Pages/NotFound.js";
 import Products from "~/Pages/Products";
+import Checkout from "~/Pages/Checkout";
 // Layout
 import DetailLayout from "~/Layouts/DetailLayout";
 // các router không cần đăng nhập
@@ -22,6 +23,12 @@ const PublicRouters = [
     },
     { path: config.routers.products, component: Products },
     { path: config.routers.notFound, component: NotFund, layout: null },
+    // userRouter
+    {
+        path: config.routers.checkout,
+        component: Checkout,
+        layout: DetailLayout,
+    },
 ];
 // các router cần cần đăng nhập
 const UserRouters = [];

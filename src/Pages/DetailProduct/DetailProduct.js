@@ -8,13 +8,13 @@ import { useDispatch } from "react-redux";
 import style from "./DetailProduct.module.scss";
 import Seo from "~/Components/Seo";
 import images from "~/Assets/images";
-import Image from "~/Components/Image";
 import MetaInfo from "./Components/MetaInfo";
 import Support from "./Components/Support";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 import Button from "~/Components/Button";
 import { addToCart, calculateTotal } from "~/Features/Cart/cartSlice";
 import { buyNow, calculateTotalBuy } from "~/Features/Checkout/checkoutSlice";
+import MediaPreview from "./Components/MediaPreview";
 
 const cx = classNames.bind(style);
 
@@ -64,6 +64,16 @@ function DetailProduct() {
         dispatch(calculateTotalBuy());
         navigate("/checkout");
     };
+    const mediaList = [
+        {
+            type: "video",
+            url: resultProduct.video_url || "g_K1w8e0lLo",
+        },
+        {
+            type: "image",
+            url: resultProduct.thumbnail?.image_url || "",
+        },
+    ];
     return (
         <>
             <Seo
@@ -74,12 +84,12 @@ function DetailProduct() {
                     resultProduct.title || "Đố Án Của SrcPlace"
                 } của SrcPlace`}
                 noIndex={false}
-                image={resultProduct.image_url || images.noImage}
+                image={resultProduct.thumbnail?.image_url || images.noImage}
                 canonical={`${process.env.REACT_APP_URL_CLIENT}${slug}`}
             />
             <div className={cx("wrapper")}>
                 <span className={cx("thumb_product")}>
-                    <Image src="" alt="" />
+                    <MediaPreview items={mediaList} />
                 </span>
                 <div className={cx("content")}>
                     <h3 className={cx("title")}>

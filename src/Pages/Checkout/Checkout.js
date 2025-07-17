@@ -14,7 +14,7 @@ import Product from "./Components/Product";
 const cx = classNames.bind(style);
 
 function Checkout() {
-    const items = [0, 0, 0]; //useSelector(selectCheckoutItems) ;
+    const items = [0, 0, 0, 0, 0, 0]; //useSelector(selectCheckoutItems) ;
     let total = useSelector(selectCheckoutTotal);
     console.log(items);
     return (

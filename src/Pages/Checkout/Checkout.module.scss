@@ -1,16 +1,38 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        width: 100%;
+    }
+    .action {
+        flex-direction: column;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .wrapper {
+        width: 80%;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1025px) {
+    .wrapper {
+        width: 80%;
+    }
+}
 .wrapper {
-    width: 80%;
     height: 100%;
-    min-height: 75vh;
+    height: 75vh;
     background-color: #cececea6;
     border-radius: 8px;
     border: 3px dotted #fbb0b0;
     box-shadow: 0 0 8px #4e4e4e99;
-    padding: 24px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 .header {
+    flex-shrink: 0; // không co lại
     width: 100%;
 }
 .item {
@@ -24,19 +46,21 @@
     flex: 0 0 65%;
     color: var(--white-color);
 }
+.products {
+    flex: 1; // chiếm toàn bộ phần còn lại
+    overflow: hidden;
+    overflow-y: overlay;
+    color: var(--white-color);
+}
 .amount {
     color: var(--white-color);
 }
-.products {
-    flex: 1;
-    color: var(--white-color);
-}
 .action {
-    right: 0;
-    bottom: 0;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-top: 16px;
 }
 .general {
     display: flex;
@@ -44,6 +68,9 @@
     gap: 8px;
     margin-right: 16px;
     color: var(--white-color);
+    & > span {
+        color: #f86120;
+    }
 }
 .btn_buy {
     background-color: #f34f4f;

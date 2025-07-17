@@ -16,7 +16,9 @@ function Product({ data = {} }) {
                 className={cx("product")}
             >
                 <Image src={data.thumbnail || ""} alt="ảnh đồ án" />
-                <h3>{data.title || "Đồ án test của SrcPlace "}</h3>
+                <div className={cx("title")}>
+                    <h3>{data.title || "Đồ án test của SrcPlace  "}</h3>
+                </div>
             </Link>
             <span className={cx("price")}>
                 {formatNumberPrice({ number: data.price || 500000 })}

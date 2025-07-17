@@ -8,7 +8,7 @@ import SidebarDetail from "~/Layouts/Components/SidebarDetail";
 
 const cx = classNames.bind(style);
 
-function DetailLayout({ children }) {
+function DetailLayout({ children, isNoSidebarMobile = false }) {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("wrapper")}>
@@ -22,7 +22,11 @@ function DetailLayout({ children }) {
                     <div className={cx("body")}>
                         <main className={cx("content")}>{children}</main>
                     </div>
-                    <footer className={cx("footer")}>
+                    <footer
+                        className={cx("footer", {
+                            isNoSidebarMobile: isNoSidebarMobile,
+                        })}
+                    >
                         <Footer />
                     </footer>
                 </div>

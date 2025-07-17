@@ -28,6 +28,9 @@ const PublicRouters = [
         path: config.routers.checkout,
         component: Checkout,
         layout: DetailLayout,
+        props: {
+            isNoSidebarMobile: true,
+        },
     },
 ];
 // các router cần cần đăng nhập

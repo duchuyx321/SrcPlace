@@ -1,3 +1,38 @@
+// responsive
+
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .product {
+        & > img {
+            height: 50%;
+        }
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .product {
+        & > img {
+            height: 100%;
+        }
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) and (max-width: 1399px) {
+    .product {
+        & > img {
+            height: 100%;
+        }
+    }
+}
+//  > 1400
+@media only screen and (min-width: 1400px) {
+    .product {
+        & > img {
+            height: 100%;
+        }
+    }
+}
+
 .wrapper {
     width: 100%;
     display: flex;
@@ -6,29 +41,43 @@
     border-bottom: 1px solid #f1efef9e;
     gap: 16px;
 }
+
 .product {
-    flex: 0 0 calc(65% - 16px);
+    width: 65%;
     height: 9rem;
-    padding: 8px 16px;
+    padding-left: 8px;
     color: var(--white-color);
     display: flex;
     align-items: center;
     gap: 8px;
+
     & > img {
-        height: 100%;
-        border-radius: 8px;
-    }
-    & > h3 {
-        flex: 1;
-        height: 100%;
-        line-height: 1.5;
-        word-break: break-word;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 16px;
-        font-weight: 300;
+        border-radius: 2px;
+        object-fit: cover;
     }
 }
+
+.title {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; // giới hạn 2 dòng
+    overflow: hidden;
+    text-overflow: ellipsis;
+    h3 {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
 .price {
-    color: var(--white-color);
+    color: #f86120;
 }

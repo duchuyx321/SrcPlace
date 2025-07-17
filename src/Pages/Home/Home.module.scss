@@ -15,7 +15,7 @@
 .title {
     color: var(--white-color);
     & > h3 {
-        font-size: 2.4rem;
+        font-size: 1.8rem;
         font-weight: 600;
         white-space: nowrap;
         overflow: hidden;
@@ -27,6 +27,7 @@
     }
     & > p {
         font-size: 1.6rem;
+        text-align: center;
     }
 }
 @keyframes scrollText {

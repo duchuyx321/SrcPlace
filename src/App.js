@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { PublicRouters, UserRouters, AdminRouters } from "~/Routers";
 import renderRoute from "~/Routers/renderRoute";
+import Notification from "~/Components/Notification";
 
 function App() {
     return (
@@ -30,6 +31,8 @@ function App() {
                     renderRoute({ Route: Route, data: routes, index: index })
                 )}
             </Routes>
+            {/* add layout tách */}
+            <Notification success />
         </Router>
     );
 }

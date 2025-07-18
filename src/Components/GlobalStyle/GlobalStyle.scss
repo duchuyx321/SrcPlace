@@ -53,7 +53,21 @@ input {
     background: none;
     list-style: none;
 }
+.tippy-box[data-theme="google"] {
+    background-color: #34a853;
+    color: white;
+}
+.tippy-box[data-theme~="google"] > .tippy-arrow::before {
+    color: #34a853; /* Đổi màu mũi tên */
+}
 
+.tippy-box[data-theme="facebook"] {
+    background-color: #1877f2;
+    color: white;
+}
+.tippy-box[data-theme~="facebook"] > .tippy-arrow::before {
+    color: #1877f2; /* Đổi màu mũi tên */
+}
 // responsive
 
 // mobile < 740px

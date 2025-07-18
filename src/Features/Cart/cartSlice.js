@@ -19,10 +19,10 @@ const cartSlice = createSlice({
                 return;
             }
             state.items.push({
-                _id: action.payload._id || "1234567890",
-                title: action.payload.title || "Đồ Án Test Của SrcPlace",
-                thumbnail: action.payload.image_url || "",
-                price: action.payload.price || 500000,
+                _id: action.payload._id,
+                title: action.payload.title,
+                thumbnail: action.payload.image_url,
+                price: action.payload.price,
             });
             state.result = {
                 status: 200,

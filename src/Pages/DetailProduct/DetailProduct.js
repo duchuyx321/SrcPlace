@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BsFillCartPlusFill } from "react-icons/bs";
 import { MdOutlineFolderZip } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import style from "./DetailProduct.module.scss";
 import Seo from "~/Components/Seo";
@@ -12,8 +12,14 @@ import MetaInfo from "./Components/MetaInfo";
 import Support from "./Components/Support";
 import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
 import Button from "~/Components/Button";
-import { addToCart, calculateTotal } from "~/Features/Cart/cartSlice";
+import {
+    addToCart,
+    calculateTotal,
+    clearMessage,
+} from "~/Features/Cart/cartSlice";
 import { buyNow, calculateTotalBuy } from "~/Features/Checkout/checkoutSlice";
+import { selectCartResult } from "~/Features/Cart/cartSelect";
+import { addToast } from "~/Features/Toast/toastSlice";
 import MediaPreview from "./Components/MediaPreview";
 
 const cx = classNames.bind(style);
@@ -21,16 +27,44 @@ const cx = classNames.bind(style);
 function DetailProduct() {
     const { slug } = useParams();
     const dispatch = useDispatch();
+    const cartResult = useSelector(selectCartResult);
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(
         !!localStorage.getItem("AccessToken")
     );
+    const [resultProduct, setResultProduct] = useState({});
+    const [isActionAddToCart, setIsActionAddToCart] = useState(false);
+    //  kiểm tra đăng nhập
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
         setIsLogin(!!AccessToken);
     }, []);
-    const [resultProduct, setResultProduct] = useState({});
-    const [isActionAddToCart, setIsActionAddToCart] = useState(false);
+    //  trả kết quả
+    useEffect(() => {
+        if (!cartResult) return;
+
+        if (cartResult.status === 200) {
+            dispatch(
+                addToast({
+                    type: "success",
+                    title: cartResult.message,
+                    duration: 5000,
+                })
+            );
+            dispatch(calculateTotal());
+        } else if (cartResult.status === 403) {
+            dispatch(
+                addToast({
+                    type: "warning",
+                    title: cartResult.message,
+                    duration: 3000,
+                })
+            );
+        }
+        // xóa thông báo
+        dispatch(clearMessage());
+    }, [cartResult, dispatch]);
+
     const handleAddToCart = () => {
         // kiểm tra thêm điểu kiện đã đăng nhập hay chưa
         if (!isLogin) {
@@ -51,7 +85,6 @@ function DetailProduct() {
                 price: resultProduct.price,
             })
         );
-        dispatch(calculateTotal());
     };
     const handleOnBuy = () => {
         dispatch(

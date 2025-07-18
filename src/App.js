@@ -1,10 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 
 import { PublicRouters, UserRouters, AdminRouters } from "~/Routers";
 import renderRoute from "~/Routers/renderRoute";
-import Notification from "~/Components/Notification";
+import { selectToasts } from "~/Features/Toast/toastSelect";
+import { removeToast } from "~/Features/Toast/toastSlice";
+import Auth from "~/Components/Auth";
 
 function App() {
+    const dispatch = useDispatch();
+    const toasts = useSelector(selectToasts);
+    useEffect(() => {
+        const timers = [];
+
+        toasts.forEach((item) => {
+            if (!item.title) return;
+
+            toast[item.type](item.title, { autoClose: item.duration || 3000 });
+
+            const timer = setTimeout(() => {
+                dispatch(removeToast({ id: item.id }));
+            }, item.duration || 3000);
+
+            timers.push(timer);
+        });
+
+        return () => {
+            timers.forEach((timer) => clearTimeout(timer));
+        };
+    }, [dispatch, toasts]);
     return (
         <Router>
             <Routes>
@@ -31,8 +58,18 @@ function App() {
                     renderRoute({ Route: Route, data: routes, index: index })
                 )}
             </Routes>
-            {/* add layout tách */}
-            <Notification success />
+            {/* add model toast message */}
+            {/* toast */}
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                pauseOnHover
+                // draggable = {}
+            />
+            <Auth />
         </Router>
     );
 }

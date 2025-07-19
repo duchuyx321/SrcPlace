@@ -3,6 +3,7 @@ import { TiDelete } from "react-icons/ti";
 
 import style from "./Auth.module.scss";
 import Other from "./components/Other";
+import Login from "./components/Login";
 
 const cx = classNames.bind(style);
 function Auth() {
@@ -10,7 +11,7 @@ function Auth() {
         console.log("close");
     };
     return (
-        <div className={cx("wrapper")} onClick={() => handleOnClose()}>
+        <div className={cx("wrapper")}>
             <div className={cx("container")}>
                 <button
                     className={cx("btn_close")}
@@ -22,7 +23,9 @@ function Auth() {
                     <div className={cx("title")}>
                         <h3>Đăng Nhập Vào SrcPlace</h3>
                     </div>
-                    <div className={cx("content")}></div>
+                    <div className={cx("content")}>
+                        <Login />
+                    </div>
                 </div>
                 <div className={cx("convert")}>
                     <div>
